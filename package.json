@@ -1,0 +1,38 @@
+{
+  "name": "codeowners",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:antonbaumann/codeowner.git",
+  "author": "Jonas Hübotter <me@jonhue.me>",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir lib --extensions .ts",
+    "start": "yarn link && nodemon --watch src --exec 'yarn build' -e ts",
+    "eslint": "eslint src --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">= 8.0"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.0",
+    "commander": "^3.0.2",
+    "core-js": "^3.4.1",
+    "tree-sitter": "^0.15.14"
+  },
+  "bin": {
+    "quik": "lib/index.js"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.7.2",
+    "@types/inquirer": "^6.5.0",
+    "@types/mkdirp": "^0.5.2",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "nodemon": "^1.19.4",
+    "typescript": "^3.7.2"
+  }
+}
