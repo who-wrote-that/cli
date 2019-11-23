@@ -25,7 +25,7 @@
   },
   "bin": {
     "codeowners": "lib/index.js",
-    "diff-lines": "diff-lines"
+    "diff-lines": "bin/diff-lines"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.2",
