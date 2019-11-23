@@ -1,19 +1,25 @@
 import {Declaration} from '../parse';
 
-const extractDeclarationName = (text: string): string => {
-    text = text.split('\n').filter(line => !line.trim().startsWith('@')).join('\n');
-    const indexFirstBracket = text.indexOf('(');
-    const elements = text.substring(0, indexFirstBracket).split(' ');
-    return elements.pop();
+const extractClassDeclarationName = (text: string): string => {
+    const indexFirstBrace = text.indexOf('{');
+    const elements = text.substring(0, indexFirstBrace).split(' ');
+    return elements.filter(element => element !== '').pop();
 };
 
 const extractClassDeclaration = (text: string): Declaration => ({
-    name: extractDeclarationName(text),
+    name: extractClassDeclarationName(text),
     type: 'class_declaration',
 });
 
+const extractMethodDeclarationName = (text: string): string => {
+    text = text.split('\n').filter(line => !line.trim().startsWith('@')).join('\n');
+    const indexFirstBracket = text.indexOf('(');
+    const elements = text.substring(0, indexFirstBracket).split(' ');
+    return elements.filter(element => element !== '').pop();
+};
+
 const extractMethodDeclaration = (text: string): Declaration => ({
-    name: extractDeclarationName(text),
+    name: extractMethodDeclarationName(text),
     type: 'method_declaration',
 });
 
