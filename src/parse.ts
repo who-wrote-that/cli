@@ -4,11 +4,11 @@ import {supportedDeclarations} from './languages/java';
 
 const parser = new Parser();
 
-export const supportedLanguages = new Map([
+const supportedLanguages = new Map([
     ['java', TreeSitterJava],
 ]);
 
-const selectParser = (suffix: string) => {
+export const selectParser = (suffix: string) => {
     if (!supportedLanguages.has(suffix)) {
         console.error(`language ${suffix} is currently not supported`);
         process.exit(1);
