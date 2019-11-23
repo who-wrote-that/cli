@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "repository": "git@github.com:antonbaumann/codeowner.git",
-  "author": "Jonas Hübotter <me@jonhue.me>",
+  "author": "Jonas Hübotter <me@jonhue.me>, Anton Baumann <anton@antonbaumann.com>",
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir lib --extensions .ts",
@@ -20,10 +20,11 @@
     "@babel/preset-env": "^7.7.0",
     "commander": "^3.0.2",
     "core-js": "^3.4.1",
-    "tree-sitter": "^0.15.14"
+    "tree-sitter": "^0.15.14",
+    "tree-sitter-java": "^0.13.0"
   },
   "bin": {
-    "quik": "lib/index.js"
+    "codeowner": "lib/index.js"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.2",
