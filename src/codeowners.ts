@@ -19,7 +19,7 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
                 return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitHashes[commitIndex], span)))
                     .then(mergeDuplicateOwners)
                     .then(owners => {
-                        return aux(def, commitHashes,commitIndex+1).then(newOwners => {
+                        return aux(def, commitHashes,commitIndex + 1).then(newOwners => {
                             return mergeDuplicateOwners([...owners, ...scale(newOwners, weight(owners))]);
                         });
                     }).catch(err => {
@@ -41,9 +41,8 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
             ...result,
             owners: squish(
                 result.owners
-                    .filter(owner => owner.score > 0)
                     .sort((a, b) => a.score < b.score ? 1 : -1)
-            )
+            ).filter(owner => owner.score > 0)
         }));
     });
 };
