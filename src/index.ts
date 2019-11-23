@@ -15,3 +15,8 @@ commander
     });
 
 commander.parse(process.argv);
+
+if (commander.args.length == 0) {
+    console.error('error: missing required arguments \'file\' and \'line\'');
+    process.exit(1);
+}
