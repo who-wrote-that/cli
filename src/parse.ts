@@ -3,7 +3,18 @@ import TreeSitterJava from 'tree-sitter-java';
 import {supportedDeclarations} from './languages/java';
 
 const parser = new Parser();
-parser.setLanguage(TreeSitterJava);
+
+const supportedLanguages = new Map([
+    ['java', TreeSitterJava],
+]);
+
+export const selectParser = (suffix: string) => {
+    if (!supportedLanguages.has(suffix)) {
+        console.error(`language ${suffix} is currently not supported`);
+        process.exit(1);
+    }
+    parser.setLanguage(supportedLanguages.get(suffix));
+};
 
 export type Span = {
     from: number;
@@ -15,7 +26,8 @@ export type Declaration = {
     type: string;
 }
 
-export const findDeclaration = (sourceCode: string, line: number): Declaration => {
+export const findDeclaration = (suffix: string, sourceCode: string, line: number): Declaration => {
+    selectParser(suffix);
     const root = parser.parse(sourceCode);
     const walker = root.walk();
     return findDeclarationRec(walker, line);
@@ -51,7 +63,8 @@ const findDeclarationRec = (walker: Parser.TreeCursor, line: number): Declaratio
     }
 };
 
-export const findSpans = (sourceCode: string, declaration: Declaration): Span[] => {
+export const findSpans = (suffix: string, sourceCode: string, declaration: Declaration): Span[] => {
+    selectParser(suffix);
     const root = parser.parse(sourceCode);
     const walker = root.walk();
     return findSpansRec(walker, declaration);
