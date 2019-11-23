@@ -6,12 +6,22 @@ import {codeOwners} from './codeowners';
 commander
     .version('Codeowners 0.1.0', '-v, --version')
     .option('-d, --depth <number>', 'maximum recursive depth')
+    .option('-f, --format <format>', 'choose between `pretty` (default) and `data`', 'pretty')
     .arguments('<file> <line>')
     .description('...')
-    .action((file, line, { depth }) => {
+    .action((file, line, {depth, format}) => {
         codeOwners(file, line, depth)
-            .then(result => console.dir(result, {depth: null}))
-            .catch(console.error);
+            .then(result => {
+                if (format === 'data') {
+                    console.dir(result, {depth: null})
+                } else if (format === 'pretty') {
+                    console.log(`${result.def.name} :: ${result.def.type}\n`)
+                    console.log(result.owners.map(owner => `${owner.score} - ${owner.author.name} (${owner.author.email})`).join('\n'))
+                } else {
+                    console.error('`format` must be one of `pretty` or `data`')
+                    process.exit(1)
+                }
+            }).catch(console.error);
     });
 
 commander.parse(process.argv);
