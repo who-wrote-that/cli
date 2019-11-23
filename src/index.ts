@@ -13,11 +13,11 @@ commander
             process.exit(1);
         }
     })
-    .option('-f, --format <format>', 'Output format. Choose between `\'pretty\'` (default) and `\'data\'`.', value => {
-        if (['pretty', 'data'].includes(value)) {
+    .option('-f, --format <format>', 'Output format. Choose between `\'pretty\'` (default), `\'data\'` and `\'json\'`.', value => {
+        if (['pretty', 'data', 'json'].includes(value)) {
             return value;
         } else {
-            console.error('`format` must be one of `\'pretty\'` or `\'data\'`');
+            console.error('`format` must be one of `\'pretty\'`, `\'data\'` or `\'json\'`');
             process.exit(1);
         }
     }, 'pretty')
@@ -36,6 +36,8 @@ commander
             .then(result => {
                 if (format === 'data') {
                     console.dir(result, {depth: null});
+                } else if (format === 'json') {
+                    console.log(JSON.stringify(result));
                 } else if (format === 'pretty') {
                     if (result.def) {
                         console.log(`${result.def.name} :: ${result.def.type}\n`);
