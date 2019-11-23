@@ -14,7 +14,7 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
                 // if current commit does not contain def
                 // assume no earlier commit contains def
                 if (spans.length == 0) return [];
-                
+
                 return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitHashes[commitIndex], span)))
                     .then(mergeDuplicateOwners)
                     .then(owners => {
@@ -42,10 +42,10 @@ const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
     const emails = new Set(owners.map(owner => owner.author.email));
 
     return Array.from(emails, email => {
-      const sameOwners = owners.filter(owner => owner.author.email === email);
-      return {
-        author: sameOwners[0].author,
-        score: sameOwners.map(owner => owner.score).reduce((ovr, score) => ovr + score)
-      };
+        const sameOwners = owners.filter(owner => owner.author.email === email);
+        return {
+            author: sameOwners[0].author,
+            score: sameOwners.map(owner => owner.score).reduce((ovr, score) => ovr + score)
+        };
     });
 };
