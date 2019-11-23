@@ -1,20 +1,22 @@
-import {getOwnerOfCommit, Owner, readFileAtCommit} from './git';
+import {commitsAffectingFile, getOwnerOfCommit, Owner, readFileAtCommit} from './git';
 import {findDef, findSpans} from './parse';
 import {readFile} from './util';
 
 export const codeOwners = (filePath: string, line: number, depth: number): Promise<Owner[]> => {
-    const aux = (def: string, commitIndex: number): Promise<Owner[]> => {
-        if (depth && commitIndex >= depth) return new Promise(resolve => resolve([]));
-        return readFileAtCommit(filePath, commitIndex)
+    const aux = (def: string, commitHashes: string[], commitIndex: number): Promise<Owner[]> => {
+        if (depth && commitIndex >= depth || commitIndex >= commitHashes.length)
+            return new Promise(resolve => resolve([]));
+
+        return readFileAtCommit(filePath, commitHashes[commitIndex])
             .then(sourceCodeAtCommit => {
                 const spans = findSpans(sourceCodeAtCommit, def);
                 // if current commit does not contain def
                 // assume no earlier commit contains def
                 if (spans.length == 0) return [];
-                return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitIndex, span)))
+                return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitHashes[commitIndex], span)))
                     .then(mergeDuplicateOwners)
                     .then(owners => {
-                        return aux(def, commitIndex+1).then(newOwners => {
+                        return aux(def, commitHashes,commitIndex+1).then(newOwners => {
                             return mergeDuplicateOwners([...owners, ...newOwners])
                         })
                     }).catch(err => {
@@ -27,9 +29,11 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
             })
     };
 
-    return readFile(filePath).then(sourceCode => {
-        return aux(findDef(sourceCode, line), 0);
-    }).then(owners => owners.sort((a, b) => a.score < b.score ? 1 : -1))
+    return commitsAffectingFile(filePath).then(commitHashes => {
+        return readFile(filePath).then(sourceCode => {
+            return aux(findDef(sourceCode, line), commitHashes, 0);
+        }).then(owners => owners.sort((a, b) => a.score < b.score ? 1 : -1))
+    });
 };
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
