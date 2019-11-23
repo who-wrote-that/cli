@@ -11,28 +11,29 @@ export type Span = {
 }
 
 export type Declaration = {
-    name: string,
-    type: string,
+    name: string;
+    type: string;
 }
 
 export const findDeclaration = (sourceCode: string, line: number): Declaration => {
     const root = parser.parse(sourceCode);
     const walker = root.walk();
-    return auxFindDeclaration(walker, line);
+    return findDeclarationRec(walker, line);
 };
 
-const auxFindDeclaration = (walker: Parser.TreeCursor, line: number): Declaration => {
+const findDeclarationRec = (walker: Parser.TreeCursor, line: number, i: number = 0): Declaration => {
     if (walker.gotoFirstChild()) {
         let nestedMatchingDeclarations = [];
 
         do {
             if (walker.currentNode.startPosition.row <= line &&
                 walker.currentNode.endPosition.row >= line) {
-                nestedMatchingDeclarations.push(auxFindDeclaration(walker, line));
+                nestedMatchingDeclarations.push(findDeclarationRec(walker.currentNode.walk(), line, i + 1));
             }
         } while (walker.gotoNextSibling());
+        walker.gotoParent();
 
-        nestedMatchingDeclarations = nestedMatchingDeclarations.filter(decl => decl != null);
+        nestedMatchingDeclarations = nestedMatchingDeclarations.filter(decl => decl !== null);
         if (nestedMatchingDeclarations.length == 0) {
             if (supportedDeclarations.has(walker.currentNode.type))
                 return supportedDeclarations.get(walker.currentNode.type)(walker.currentNode.text);
@@ -50,14 +51,13 @@ const auxFindDeclaration = (walker: Parser.TreeCursor, line: number): Declaratio
     }
 };
 
-
 export const findSpans = (sourceCode: string, declaration: Declaration): Span[] => {
     const root = parser.parse(sourceCode);
     const walker = root.walk();
-    return auxFindSpans(walker, declaration);
+    return findSpansRec(walker, declaration);
 };
 
-const auxFindSpans = (walker: Parser.TreeCursor, declaration: Declaration): Span[] => {
+const findSpansRec = (walker: Parser.TreeCursor, declaration: Declaration): Span[] => {
     let spans: Span[] = [];
 
     if (supportedDeclarations.has(walker.currentNode.type)) {
@@ -74,7 +74,7 @@ const auxFindSpans = (walker: Parser.TreeCursor, declaration: Declaration): Span
 
     if (walker.gotoFirstChild()) {
         do {
-            spans = [...spans, ...auxFindSpans(walker.currentNode.walk(), declaration)];
+            spans = [...spans, ...findSpansRec(walker.currentNode.walk(), declaration)];
         } while (walker.gotoNextSibling());
     }
 
