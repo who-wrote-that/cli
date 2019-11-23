@@ -20,7 +20,7 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
                     .then(mergeDuplicateOwners)
                     .then(owners => {
                         return aux(def, commitHashes,commitIndex+1).then(newOwners => {
-                            return mergeDuplicateOwners([...owners, ...newOwners]);
+                            return mergeDuplicateOwners([...owners, ...scale(newOwners, weight(owners))]);
                         });
                     }).catch(err => {
                         console.error(err);
@@ -46,6 +46,14 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
             )
         }));
     });
+};
+
+const scale = (owners: Owner[], factor: number): Owner[] => {
+    return owners.map(owner => ({...owner, score: owner.score * 1 / factor}));
+};
+
+const weight = (owners: Owner[]): number => {
+    return owners.map(owner => owner.score).reduce((sum, score) => sum + score);
 };
 
 const squish = (owners: Owner[]): Owner[] => {
