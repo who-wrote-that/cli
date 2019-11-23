@@ -13,13 +13,17 @@ commander
         codeOwners(file, line, depth)
             .then(result => {
                 if (format === 'data') {
-                    console.dir(result, {depth: null})
+                    console.dir(result, {depth: null});
                 } else if (format === 'pretty') {
-                    console.log(`${result.def.name} :: ${result.def.type}\n`)
-                    console.log(result.owners.map(owner => `${owner.score} - ${owner.author.name} (${owner.author.email})`).join('\n'))
+                    console.log(`${result.def.name} :: ${result.def.type}\n`);
+                    console.log(
+                        result.owners.map(owner => {
+                            return `${owner.score} - ${owner.author.name} (${owner.author.email})`;
+                        }).join('\n')
+                    );
                 } else {
-                    console.error('`format` must be one of `pretty` or `data`')
-                    process.exit(1)
+                    console.error('`format` must be one of `pretty` or `data`');
+                    process.exit(1);
                 }
             }).catch(console.error);
     });
