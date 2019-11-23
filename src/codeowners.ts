@@ -35,7 +35,12 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
         return readFile(filePath).then(sourceCode => {
             const def = findDeclaration(sourceCode, line);
             return aux(def, commitHashes, 0).then(owners => ({def, owners}));
-        }).then(result => ({...result, owners: result.owners.sort((a, b) => a.score < b.score ? 1 : -1)}));
+        }).then(result => ({
+            ...result,
+            owners: result.owners
+                .filter(owner => owner.score > 0)
+                .sort((a, b) => a.score < b.score ? 1 : -1)
+        }));
     });
 };
 
