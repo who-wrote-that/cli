@@ -8,7 +8,9 @@ commander
     .arguments('<file> <line>')
     .description('...')
     .action((file, line, options) => {
-        codeOwners(file, line).then(console.log)
+        codeOwners(file, line)
+            .then(console.log)
+            .catch(console.error)
     });
 
 commander.parse(process.argv);

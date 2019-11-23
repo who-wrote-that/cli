@@ -60,7 +60,7 @@ const auxFindSpans = (walker: Parser.TreeCursor, def: string): Span[] => {
 
     if (walker.gotoFirstChild()) {
         do {
-            spans = [...spans, ...auxFindSpans(walker, def)];
+            spans = [...spans, ...auxFindSpans(walker.currentNode.walk(), def)];
         } while (walker.gotoNextSibling());
     }
 

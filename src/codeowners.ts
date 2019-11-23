@@ -4,28 +4,31 @@ import {readFile} from './util';
 
 export const codeOwners = (filePath: string, line: number): Promise<Owner[]> => {
     const aux = (def: string, commitIndex: number): Promise<Owner[]> => {
+        console.log(def);
         return readFileAtCommit(filePath, commitIndex)
             .then(sourceCodeAtCommit => {
                 const spans = findSpans(sourceCodeAtCommit, def);
+                // if current commit does not contain def
+                // assume no earlier commit contains def
+                if (spans.length == 0) return [];
                 return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitIndex, span)))
                     .then(mergeDuplicateOwners)
                     .then(owners => {
                         return aux(def, commitIndex+1).then(newOwners => {
-                            return [...owners, ...newOwners]
+                            return mergeDuplicateOwners([...owners, ...newOwners])
                         })
                     }).catch(err => {
                         console.error(err);
                         return [];
                     })
             }).catch(err => {
-                // console.log("HALLLLLO");
-                // console.error(err);
+                // file could not be read at HEAD~commitIndex
                 return [];
             })
     };
 
     return readFile(filePath).then(sourceCode => {
-        return aux(findDef(sourceCode, line), 1);
+        return aux(findDef(sourceCode, line), 0);
     })
 };
 
