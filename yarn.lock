@@ -3225,6 +3225,13 @@ touch@^3.1.0:
   dependencies:
     nopt "~1.0.10"
 
+tree-sitter-go@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-go/-/tree-sitter-go-0.15.0.tgz#d10b122c6ad58638b42b608b9d2d22899f8fe904"
+  integrity sha512-booht80IETCTTj79Yeicr0UmH9DhZeg8IA58Cf8evuARatbebsUQdh4Zg49Ye+15zVD663/LM+NxkmnJLfq2Rw==
+  dependencies:
+    nan "^2.10.0"
+
 tree-sitter-java@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/tree-sitter-java/-/tree-sitter-java-0.13.0.tgz#9f438ed8e8c04af6dca36cd67ab047f600f8fd5b"

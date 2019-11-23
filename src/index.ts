@@ -15,7 +15,12 @@ commander
                 if (format === 'data') {
                     console.dir(result, {depth: null});
                 } else if (format === 'pretty') {
-                    console.log(`${result.def.name} :: ${result.def.type}\n`);
+                    if (result.def) {
+                        console.log(`${result.def.name} :: ${result.def.type}\n`);
+                    } else {
+                        console.error('Given line number does not yield a supported declaration');
+                        process.exit(1);
+                    }
                     console.log(
                         result.owners.map(owner => {
                             return `${owner.score} - ${owner.author.name} (${owner.author.email})`;
