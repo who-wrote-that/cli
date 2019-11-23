@@ -4,7 +4,7 @@ import TreeSitterJava from 'tree-sitter-java'
 const parser = new Parser();
 parser.setLanguage(TreeSitterJava);
 
-type Span = {
+export type Span = {
     from: number;
     to: number;
 }
