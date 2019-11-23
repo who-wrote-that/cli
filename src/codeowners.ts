@@ -2,7 +2,7 @@ import {commitsAffectingFile, getOwnerOfCommit, Owner, readFileAtCommit} from '.
 import {Declaration, findDeclaration, findSpans} from './parse';
 import {readFile} from './util';
 
-export const codeOwners = (filePath: string, line: number, depth: number): Promise<{def: Definition, owners: Owner[]}> => {
+export const codeOwners = (filePath: string, line: number, depth: number): Promise<{def: Declaration; owners: Owner[]}> => {
     const aux = (def: Declaration, commitHashes: string[], commitIndex: number): Promise<Owner[]> => {
         if (depth && commitIndex >= depth || commitIndex >= commitHashes.length)
             return new Promise(resolve => resolve([]));
@@ -33,8 +33,8 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
 
     return commitsAffectingFile(filePath).then(commitHashes => {
         return readFile(filePath).then(sourceCode => {
-            const def = findDeclaration(sourceCode, line)
-            return aux(def, commitHashes, 0).then(owners => ({def, owners}))
+            const def = findDeclaration(sourceCode, line);
+            return aux(def, commitHashes, 0).then(owners => ({def, owners}));
         }).then(result => ({...result, owners: result.owners.sort((a, b) => a.score < b.score ? 1 : -1)}));
     });
 };

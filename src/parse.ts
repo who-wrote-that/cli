@@ -21,14 +21,14 @@ export const findDeclaration = (sourceCode: string, line: number): Declaration =
     return findDeclarationRec(walker, line);
 };
 
-const findDeclarationRec = (walker: Parser.TreeCursor, line: number, i: number = 0): Declaration => {
+const findDeclarationRec = (walker: Parser.TreeCursor, line: number): Declaration => {
     if (walker.gotoFirstChild()) {
         let nestedMatchingDeclarations = [];
 
         do {
             if (walker.currentNode.startPosition.row <= line &&
                 walker.currentNode.endPosition.row >= line) {
-                nestedMatchingDeclarations.push(findDeclarationRec(walker.currentNode.walk(), line, i + 1));
+                nestedMatchingDeclarations.push(findDeclarationRec(walker.currentNode.walk(), line));
             }
         } while (walker.gotoNextSibling());
         walker.gotoParent();
