@@ -9,7 +9,8 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
 
         return readFileAtCommit(filePath, commitHashes[commitIndex])
             .then(sourceCodeAtCommit => {
-                const spans = findSpans(sourceCodeAtCommit, def);
+                const suffix = filePath.split('.').pop();
+                const spans = findSpans(suffix, sourceCodeAtCommit, def);
 
                 // if current commit does not contain def
                 // assume no earlier commit contains def
@@ -33,7 +34,8 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
 
     return commitsAffectingFile(filePath).then(commitHashes => {
         return readFile(filePath).then(sourceCode => {
-            const def = findDeclaration(sourceCode, line);
+            const suffix = filePath.split('.').pop();
+            const def = findDeclaration(suffix, sourceCode, line);
             return aux(def, commitHashes, 0).then(owners => ({def, owners}));
         }).then(result => ({...result, owners: result.owners.sort((a, b) => a.score < b.score ? 1 : -1)}));
     });
