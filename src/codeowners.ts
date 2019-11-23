@@ -2,9 +2,9 @@ import {getOwnerOfCommit, Owner, readFileAtCommit} from './git';
 import {findDef, findSpans} from './parse';
 import {readFile} from './util';
 
-export const codeOwners = (filePath: string, line: number): Promise<Owner[]> => {
+export const codeOwners = (filePath: string, line: number, depth: number): Promise<Owner[]> => {
     const aux = (def: string, commitIndex: number): Promise<Owner[]> => {
-        console.log(def);
+        if (depth && commitIndex >= depth) return new Promise(resolve => resolve([]));
         return readFileAtCommit(filePath, commitIndex)
             .then(sourceCodeAtCommit => {
                 const spans = findSpans(sourceCodeAtCommit, def);
@@ -29,12 +29,12 @@ export const codeOwners = (filePath: string, line: number): Promise<Owner[]> => 
 
     return readFile(filePath).then(sourceCode => {
         return aux(findDef(sourceCode, line), 0);
-    })
+    }).then(owners => owners.sort((a, b) => a.score < b.score ? 1 : -1))
 };
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
     const tmp = new Map();
-    owners.forEach(owner => {
+    owners.filter(owner => owner.score > 0).forEach(owner => {
         if (tmp.has(owner.author)) tmp.set(owner.author, tmp.get(owner.author) + owner.score);
         else tmp.set(owner.author, owner.score);
     });

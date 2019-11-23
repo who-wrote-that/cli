@@ -32,7 +32,7 @@ const getAuthorOfCommit = (commitIndex: number): Promise<string> => {
     return new Promise((resolve, reject) => {
         childProcess.exec(
             `git show HEAD~${commitIndex} | grep Author`,
-            (err, data) => !err ? resolve(data.substring(data.indexOf(' ') + 1).trim()) : reject(err)
+            (err, data) => !err ? resolve(data.substring(data.indexOf(' ') + 1).split('\n')[0]) : reject(err)
         )
     })
 };

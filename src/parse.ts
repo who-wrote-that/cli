@@ -34,6 +34,7 @@ const auxFindDef = (walker: Parser.TreeCursor, line: number): string => {
 };
 
 const extractDef = (text: string): string => {
+    text = text.split('\n').filter(line => !line.trim().startsWith('@')).join('\n');
     const indexFirstBracket = text.indexOf('(');
     const elements = text.substring(0, indexFirstBracket).split(' ');
     return elements.pop();
