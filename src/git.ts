@@ -1,8 +1,12 @@
 import childProcess from 'child_process'
 import {Span} from './parse';
 
+type Author = {
+    name: string;
+    email: string;
+}
 export type Owner = {
-    author: string;
+    author: Author;
     score: number;
 }
 
@@ -33,19 +37,29 @@ const getChangedLineNumbersAtCommit = (filePath: string, commitHash: string): Pr
 
 const getDiff = (command: string): Promise<number[]> => {
     return new Promise((resolve, reject) => {
-        childProcess.exec(command,
-            (err, data) => {
-                !err ? resolve(data.split('\n').map(n => parseInt(n)).filter(n => !isNaN(n))) : reject(err)
-            })
+            childProcess.exec(command,
+                (err, data) => {
+                    !err ? resolve(data.split('\n').map(n => parseInt(n)).filter(n => !isNaN(n))) : reject(err)
+                })
         }
     )
 };
 
-const getAuthorOfCommit = (commitHash: string): Promise<string> => {
+const getAuthorOfCommit = (commitHash: string): Promise<Author> => {
     return new Promise((resolve, reject) => {
         childProcess.exec(
             `git show ${commitHash} | grep Author`,
-            (err, data) => !err ? resolve(data.substring(data.indexOf(' ') + 1).split('\n')[0]) : reject(err)
+            (err, data) => {
+                if (!err) {
+                    const line = data.split('\n')[0];
+                    resolve({
+                        name: line.substring(line.indexOf(' ') + 1, line.lastIndexOf('<') - 1),
+                        email: line.substring(line.lastIndexOf('<') + 1, line.lastIndexOf('>')),
+                    })
+                } else {
+                    reject(err)
+                }
+            }
         )
     })
 };
