@@ -2,7 +2,7 @@ import {commitsAffectingFile, getOwnerOfCommit, Owner, readFileAtCommit} from '.
 import {Declaration, findDeclaration, findSpans} from './parse';
 import {readFile, round} from './util';
 
-export const codeOwners = (filePath: string, line: number, depth: number): Promise<{def: Declaration; owners: Owner[]}> => {
+export const codeOwners = (filePath: string, line: number, depth: number, strategy: string): Promise<{def: Declaration; owners: Owner[]}> => {
     const aux = (def: Declaration, commitHashes: string[], commitIndex: number): Promise<Owner[]> => {
         if (depth && commitIndex >= depth || commitIndex >= commitHashes.length)
             return new Promise(resolve => resolve([]));
@@ -20,7 +20,7 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
                     .then(mergeDuplicateOwners)
                     .then(owners => {
                         return aux(def, commitHashes,commitIndex + 1).then(newOwners => {
-                            return mergeDuplicateOwners([...owners, ...scale(newOwners, weight(owners))]);
+                            return mergeDuplicateOwners([...owners, ...scale(strategy, newOwners, weight(strategy, owners))]);
                         });
                     }).catch(err => {
                         console.error(err);
@@ -47,18 +47,25 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
     });
 };
 
-const scale = (owners: Owner[], factor: number): Owner[] => {
-    return owners.map(owner => ({...owner, score: owner.score * 1 / factor}));
+const scale = (strategy: string, owners: Owner[], factor: number): Owner[] => {
+    if (strategy === 'weighted-lines')
+        return owners.map(owner => ({...owner, score: owner.score * (factor - factor / 4) / factor}));
+    else if (strategy === 'lines')
+        return owners;
 };
 
-const weight = (owners: Owner[]): number => {
-    return owners.map(owner => owner.score).reduce((sum, score) => sum + score);
+const weight = (strategy: string, owners: Owner[]): number => {
+    if (strategy === 'weighted-lines')
+        return owners.map(owner => owner.score).reduce((sum, score) => sum + score) + 1;
+    else if (strategy === 'lines')
+        return null;
 };
 
 const squish = (owners: Owner[]): Owner[] => {
     const maxScore = Math.max(...owners.map(owner => owner.score));
 
     return owners.map(owner => ({...owner, score: round(0, 100 * owner.score / maxScore)}));
+    // return owners;
 };
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
