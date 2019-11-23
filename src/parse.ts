@@ -5,7 +5,7 @@ import {supportedDeclarations as declarationsJava} from './languages/java';
 import {supportedDeclarations as declarationsJavaScript} from './languages/javascript';
 
 const parser = new Parser();
-let supportedDeclarations = declarationsJava;
+let supportedDeclarations = new Map();
 
 const supportedLanguages = new Map([
     ['java', {parser: TreeSitterJava, declarations: declarationsJava}],
