@@ -10,7 +10,7 @@ commander
     .description('...')
     .action((file, line, { depth }) => {
         codeOwners(file, line, depth)
-            .then(console.log)
+            .then(result => console.dir(result, {depth: null}))
             .catch(console.error);
     });
 
