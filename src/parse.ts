@@ -1,19 +1,25 @@
 import Parser from 'tree-sitter';
 import TreeSitterJava from 'tree-sitter-java';
-import {supportedDeclarations} from './languages/java';
+import TreeSitterJavaScript from 'tree-sitter-javascript';
+import {supportedDeclarations as declarationsJava} from './languages/java';
+import {supportedDeclarations as declarationsJavaScript} from './languages/javascript';
 
 const parser = new Parser();
+let supportedDeclarations = new Map();
 
 const supportedLanguages = new Map([
-    ['java', TreeSitterJava],
+    ['java', {parser: TreeSitterJava, declarations: declarationsJava}],
+    ['js', {parser: TreeSitterJavaScript, declarations: declarationsJavaScript}],
+    ['es', {parser: TreeSitterJavaScript, declarations: declarationsJavaScript}],
 ]);
 
-export const selectParser = (suffix: string) => {
+export const selectParser = (suffix: string): void => {
     if (!supportedLanguages.has(suffix)) {
         console.error(`language ${suffix} is currently not supported`);
         process.exit(1);
     }
-    parser.setLanguage(supportedLanguages.get(suffix));
+    parser.setLanguage(supportedLanguages.get(suffix).parser);
+    supportedDeclarations = supportedLanguages.get(suffix).declarations;
 };
 
 export type Span = {
