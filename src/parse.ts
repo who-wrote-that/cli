@@ -4,7 +4,7 @@ import TreeSitterJava from 'tree-sitter-java'
 const parser = new Parser();
 parser.setLanguage(TreeSitterJava);
 
-type Span = {
+export type Span = {
     from: number;
     to: number;
 }
@@ -34,6 +34,7 @@ const auxFindDef = (walker: Parser.TreeCursor, line: number): string => {
 };
 
 const extractDef = (text: string): string => {
+    text = text.split('\n').filter(line => !line.trim().startsWith('@')).join('\n');
     const indexFirstBracket = text.indexOf('(');
     const elements = text.substring(0, indexFirstBracket).split(' ');
     return elements.pop();
@@ -60,7 +61,7 @@ const auxFindSpans = (walker: Parser.TreeCursor, def: string): Span[] => {
 
     if (walker.gotoFirstChild()) {
         do {
-            spans = [...spans, ...auxFindSpans(walker, def)];
+            spans = [...spans, ...auxFindSpans(walker.currentNode.walk(), def)];
         } while (walker.gotoNextSibling());
     }
 

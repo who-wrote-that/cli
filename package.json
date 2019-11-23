@@ -24,10 +24,12 @@
     "tree-sitter-java": "^0.13.0"
   },
   "bin": {
-    "codeowner": "lib/index.js"
+    "codeowner": "lib/index.js",
+    "diff-lines": "diff-lines"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.2",
+    "@types/node": "^12.12.12",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
     "eslint": "^6.6.0",

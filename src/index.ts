@@ -1,20 +1,17 @@
+#!/usr/bin/env node
 import commander from 'commander'
-import {readFile} from './util'
-import path from 'path'
-import {findSpans, findDef} from './parse'
-
+import {codeOwners} from './codeowners';
 
 commander
     .version('Codeowners 0.1.0', '-v, --version')
-    .option('-d, --debug', 'enable debug mode')
+    .option('--debug', 'enable debug mode', false)
+    .option('-d, --depth <number>', 'maximum recursive depth')
     .arguments('<file> <line>')
     .description('...')
-    .action((file, line, options) => {
-        readFile(path.join(process.cwd(), file)).then(data => {
-            console.log(findDef(data, line));
-            console.log(findSpans(data, 'Test'));
-
-        })
+    .action((file, line, { debug, depth }) => {
+        codeOwners(file, line, depth)
+            .then(console.log)
+            .catch(console.error)
     });
 
 commander.parse(process.argv);
