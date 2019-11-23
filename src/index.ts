@@ -6,7 +6,7 @@ import {codeOwners} from './codeowners';
 commander
     .version('Codeowners 0.1.0', '-v, --version')
     .option('-d, --depth <number>', 'maximum recursive depth')
-    .option('-f, --format <format>', 'choose between `pretty` (default) and `data`', 'pretty')
+    .option('-f, --format <format>', 'choose between `pretty` (default), `data` and `json`', 'pretty')
     .arguments('<file> <line>')
     .description('...')
     .action((file, line, {depth, format}) => {
@@ -14,6 +14,8 @@ commander
             .then(result => {
                 if (format === 'data') {
                     console.dir(result, {depth: null});
+                } else if (format === 'json') {
+                    console.log(JSON.stringify(result));
                 } else if (format === 'pretty') {
                     if (result.def) {
                         console.log(`${result.def.name} :: ${result.def.type}\n`);
