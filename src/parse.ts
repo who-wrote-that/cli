@@ -1,5 +1,5 @@
-import Parser from 'tree-sitter'
-import TreeSitterJava from 'tree-sitter-java'
+import Parser from 'tree-sitter';
+import TreeSitterJava from 'tree-sitter-java';
 
 const parser = new Parser();
 parser.setLanguage(TreeSitterJava);
@@ -22,7 +22,7 @@ const auxFindDef = (walker: Parser.TreeCursor, line: number): string => {
         do {
             if (walker.currentNode.startPosition.row <= line &&
                 walker.currentNode.endPosition.row >= line) {
-                return auxFindDef(walker, line)
+                return auxFindDef(walker, line);
             }
         } while (walker.gotoNextSibling());
         console.log('outside method declaration');
@@ -53,8 +53,8 @@ const auxFindSpans = (walker: Parser.TreeCursor, def: string): Span[] => {
             return [{
                 from: walker.currentNode.startPosition.row,
                 to: walker.currentNode.endPosition.row
-            }]
-        } else return []
+            }];
+        } else return [];
     }
 
     let spans: Span[] = [];
