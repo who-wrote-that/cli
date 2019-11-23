@@ -17,22 +17,22 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
                     .then(mergeDuplicateOwners)
                     .then(owners => {
                         return aux(def, commitHashes,commitIndex+1).then(newOwners => {
-                            return mergeDuplicateOwners([...owners, ...newOwners])
-                        })
+                            return mergeDuplicateOwners([...owners, ...newOwners]);
+                        });
                     }).catch(err => {
                         console.error(err);
                         return [];
-                    })
-            }).catch(err => {
+                    });
+            }).catch(() => {
                 // file could not be read at HEAD~commitIndex
                 return [];
-            })
+            });
     };
 
     return commitsAffectingFile(filePath).then(commitHashes => {
         return readFile(filePath).then(sourceCode => {
             return aux(findDef(sourceCode, line), commitHashes, 0);
-        }).then(owners => owners.sort((a, b) => a.score < b.score ? 1 : -1))
+        }).then(owners => owners.sort((a, b) => a.score < b.score ? 1 : -1));
     });
 };
 
@@ -42,5 +42,5 @@ const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
         if (tmp.has(owner.author)) tmp.set(owner.author, tmp.get(owner.author) + owner.score);
         else tmp.set(owner.author, owner.score);
     });
-    return Array.from(tmp.entries(), ([k, v]) => ({author: k, score: v}))
+    return Array.from(tmp.entries(), ([k, v]) => ({author: k, score: v}));
 };
