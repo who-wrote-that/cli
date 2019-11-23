@@ -7,3 +7,7 @@ export const readFile = (path: string): Promise<string> => {
         });
     });
 };
+
+export const round = (decimalPlaces: number, value: number): number => {
+    return Math.round(10**decimalPlaces * value) / 10**decimalPlaces;
+};

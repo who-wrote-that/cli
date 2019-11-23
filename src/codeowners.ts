@@ -1,6 +1,6 @@
 import {commitsAffectingFile, getOwnerOfCommit, Owner, readFileAtCommit} from './git';
 import {Declaration, findDeclaration, findSpans} from './parse';
-import {readFile} from './util';
+import {readFile, round} from './util';
 
 export const codeOwners = (filePath: string, line: number, depth: number): Promise<{def: Declaration; owners: Owner[]}> => {
     const aux = (def: Declaration, commitHashes: string[], commitIndex: number): Promise<Owner[]> => {
@@ -39,11 +39,19 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
             return aux(def, commitHashes, 0).then(owners => ({def, owners}));
         }).then(result => ({
             ...result,
-            owners: result.owners
-                .filter(owner => owner.score > 0)
-                .sort((a, b) => a.score < b.score ? 1 : -1)
+            owners: squish(
+                result.owners
+                    .filter(owner => owner.score > 0)
+                    .sort((a, b) => a.score < b.score ? 1 : -1)
+            )
         }));
     });
+};
+
+const squish = (owners: Owner[]): Owner[] => {
+    const maxScore = Math.max(...owners.map(owner => owner.score));
+
+    return owners.map(owner => ({...owner, score: round(0, 100 * owner.score / maxScore)}));
 };
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
