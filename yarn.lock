@@ -2269,7 +2269,7 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nan@^2.10.0, nan@^2.12.1, nan@^2.14.0, nan@^2.8.0:
+nan@^2.10.0, nan@^2.12.1, nan@^2.14.0, nan@^2.4.0, nan@^2.8.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
@@ -3245,6 +3245,13 @@ tree-sitter-javascript@^0.15.1:
   integrity sha512-YqElb/+Ds+wKttfCzNu03/C+gD5PnE79j7ldWnQ+Ww9PqU3QpR3/CdOg/05jqKGMWJVzXcgNEZ3TWOxcJT+Uug==
   dependencies:
     nan "^2.12.1"
+
+tree-sitter-python@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/tree-sitter-python/-/tree-sitter-python-0.15.0.tgz#48af1fbe75a06e82fae62dcc650ee1b0126fb43e"
+  integrity sha512-lOV84DUTsyab8xRfU0o8pBQOKAZPjIJsGL7q0buuORHQvvwnvy3iwF/83OGSyiNYRJzPz6gW+E1N/VgNNavMHA==
+  dependencies:
+    nan "^2.4.0"
 
 tree-sitter-typescript@^0.15.1:
   version "0.15.1"

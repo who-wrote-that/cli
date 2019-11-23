@@ -2,9 +2,11 @@ import Parser from 'tree-sitter';
 import TreeSitterJava from 'tree-sitter-java';
 import TreeSitterJavaScript from 'tree-sitter-javascript';
 import TreeSitterGo from 'tree-sitter-go';
+import TreeSitterPython from 'tree-sitter-python';
 import {supportedDeclarations as declarationsJava} from './languages/java';
 import {supportedDeclarations as declarationsJavaScript} from './languages/javascript';
 import {supportedDeclarations as declarationsGo} from './languages/go';
+import {supportedDeclarations as declarationsPython} from './languages/python';
 
 const parser = new Parser();
 let supportedDeclarations = new Map();
@@ -14,6 +16,7 @@ const supportedLanguages = new Map([
     ['js', {parser: TreeSitterJavaScript, declarations: declarationsJavaScript}],
     ['es', {parser: TreeSitterJavaScript, declarations: declarationsJavaScript}],
     ['go', {parser: TreeSitterGo, declarations: declarationsGo}],
+    ['py', {parser: TreeSitterPython, declarations: declarationsPython}],
 ]);
 
 export const selectParser = (suffix: string): void => {
