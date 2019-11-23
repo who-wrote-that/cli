@@ -10,9 +10,11 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
         return readFileAtCommit(filePath, commitHashes[commitIndex])
             .then(sourceCodeAtCommit => {
                 const spans = findSpans(sourceCodeAtCommit, def);
+
                 // if current commit does not contain def
                 // assume no earlier commit contains def
                 if (spans.length == 0) return [];
+
                 return Promise.all(spans.map(span => getOwnerOfCommit(filePath, commitHashes[commitIndex], span)))
                     .then(mergeDuplicateOwners)
                     .then(owners => {
@@ -37,10 +39,13 @@ export const codeOwners = (filePath: string, line: number, depth: number): Promi
 };
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
-    const tmp = new Map();
-    owners.filter(owner => owner.score > 0).forEach(owner => {
-        if (tmp.has(owner.author)) tmp.set(owner.author, tmp.get(owner.author) + owner.score);
-        else tmp.set(owner.author, owner.score);
+    const emails = new Set(owners.map(owner => owner.author.email));
+
+    return Array.from(emails, email => {
+        const sameOwners = owners.filter(owner => owner.author.email === email);
+        return {
+            author: sameOwners[0].author,
+            score: sameOwners.map(owner => owner.score).reduce((ovr, score) => ovr + score)
+        };
     });
-    return Array.from(tmp.entries(), ([k, v]) => ({author: k, score: v}));
 };
