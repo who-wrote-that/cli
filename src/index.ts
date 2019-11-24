@@ -2,6 +2,7 @@
 
 import commander from 'commander';
 import {codeOwners} from './codeowners';
+import chalk from 'chalk';
 
 commander
     .version('Codeowners 0.1.0', '-v, --version')
@@ -40,7 +41,7 @@ commander
                     console.log(JSON.stringify(result));
                 } else if (format === 'pretty') {
                     if (result.def) {
-                        console.log(`${result.def.name} :: ${result.def.type}\n`);
+                        console.log(`${chalk.underline.bold(result.def.name)} ${chalk.gray(':: ' + result.def.type)}`);
                     } else {
                         console.error('Given line number does not yield a supported declaration');
                         process.exit(1);
@@ -49,7 +50,7 @@ commander
                     if (result.owners.length > 0) {
                         console.log(
                             result.owners.map(owner => {
-                                return `${owner.score} - ${owner.author.name} (${owner.author.email})`;
+                                return `  ${owner.score}\t - ${owner.author.name} (${owner.author.email})`;
                             }).join('\n')
                         );
                     } else {
