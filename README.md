@@ -27,7 +27,7 @@ Starting to work on a larger software project is often intimidating. We develope
 1. It makes it easy to find a person of contact that owns a specific definition within a file. Depending on the programming language a definition may be a function or method definition, a class declaration or an interface. A substantial algorithm is used to provide accurate results that take into account the entire history of a project.
 2. It provides a structured overview of a file/project that also includes information on code ownership.
 
-Codeowners works with Git repositories. It uses [Tree-sitter](Starting to work on a larger project is often intimidating. We developed this powerful tool to make it easier for programmers to get familiar with a new project.) parsers to build Abstract Syntax Trees of code in a multitude of programming languages. [Programming languages supported by Codeowners](#language-support) include:
+Codeowners works with Git repositories. It uses [Tree-sitter](http://tree-sitter.github.io/tree-sitter/) parsers to build Abstract Syntax Trees of code in a multitude of programming languages. [Programming languages supported by Codeowners](#language-support) include:
 
 * Java
 * JavaScript
@@ -78,9 +78,9 @@ Lookup code owners for a directory and its files.
 
 | Option | Description |
 | ------ | ----------- |
-| `-d --depth <number>` | The maxmium recursive depth of the [code owner algorithm](#Algorithm) (e.g. the number of commits to look back in history). Takes a positive number. Defaults to `undefined` -- unlimited recursive depth. |
+| `-d --depth <number>` | The maxmium recursive depth of the [code owner algorithm](#algorithm) (e.g. the number of commits to look back in history). Takes a positive number. Defaults to `undefined` -- unlimited recursive depth. |
 | `-f --format <format>` | Output format. Allowed values are `pretty`, `data`, and `json`. Defaults to `pretty`. |
-| `-s --strategy` | [Strategy](#strategies) used for the [code owner algorithm](#Algorithm). Allowed values are `weighted-lines`, and `lines`. Defaults to `weighted-lines`. |
+| `-s --strategy` | [Strategy](#strategies) used for the [code owner algorithm](#algorithm). Allowed values are `weighted-lines`, and `lines`. Defaults to `weighted-lines`. |
 | `-v --version` | Outputs the version number |
 | `-h --help` | Outputs usage information |
 
