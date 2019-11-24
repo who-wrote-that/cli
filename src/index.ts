@@ -6,6 +6,8 @@ import {codeOwnersByLine, codeOwnersByDefName} from './codeowners';
 import {Owner} from './git';
 import {Declaration} from './parse';
 
+const VERSION = '0.1.0';
+
 const validateDepth = (value: number): number => {
     if (value >= 0) {
         return value;
@@ -60,7 +62,7 @@ const handleResult = (result: {def: Declaration; owners: Owner[]}, format: strin
 };
 
 commander
-    .version('Codeowners 0.1.0', '-v, --version');
+    .version(`Codeowners ${VERSION}`, '-v, --version');
 
 commander
     .command('line <file> <line>')
