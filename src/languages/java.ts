@@ -1,9 +1,9 @@
 import {Declaration} from '../parse';
 
 const extractClassDeclarationName = (text: string): string => {
-    const indexFirstBrace = text.indexOf('{');
-    const elements = text.substring(0, indexFirstBrace).split(' ');
-    return elements.filter(element => element !== '').pop();
+    const indexClassToken = text.indexOf('class');
+    const elements = text.substring(indexClassToken + 6).split(' ');
+    return elements.filter(element => element !== '').shift();
 };
 
 const extractClassDeclaration = (text: string): Declaration => ({
