@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import commander from 'commander';
+import chalk from 'chalk';
 import {codeOwnersByLine, codeOwnersByDefName} from './codeowners';
 import {Owner} from './git';
 import {Declaration} from './parse';
@@ -39,7 +40,7 @@ const handleResult = (result: {def: Declaration; owners: Owner[]}, format: strin
         console.log(JSON.stringify(result));
     } else if (format === 'pretty') {
         if (result.def) {
-            console.log(`${result.def.name} :: ${result.def.type}\n`);
+            console.log(`${chalk.underline.bold(result.def.name)} ${chalk.gray(':: ' + result.def.type)}`);
         } else {
             console.error('Given line number does not yield a supported declaration');
             process.exit(1);
@@ -48,7 +49,7 @@ const handleResult = (result: {def: Declaration; owners: Owner[]}, format: strin
         if (result.owners.length > 0) {
             console.log(
                 result.owners.map(owner => {
-                    return `${owner.score} - ${owner.author.name} (${owner.author.email})`;
+                    return `  ${owner.score}\t - ${owner.author.name} (${owner.author.email})`;
                 }).join('\n')
             );
         } else {
