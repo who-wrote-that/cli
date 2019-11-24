@@ -8,8 +8,7 @@ A command line tool to quickly find code owners of definitions (class/function/.
 * [Usage](#usage)
   * [Installation](#installation)
   * [`line`](#line)
-  * [`file`](#file)
-  * [`dir`](#dir)
+  * [`def`](#def)
   * [Options](#options)
   * [Language support](#language-support)
 * [Theory](#theory)
@@ -58,21 +57,13 @@ codeowners line <file> <lineNumber>
 
 Lookup code owners for a specific line of a file.
 
-### `file`
+### `def`
 
 ```
-codeowners file <file>
+codeowners def <file> <definition>
 ```
 
-Lookup code owners and definitions of a file.
-
-### `dir`
-
-```
-codeowners dir <file> <lineNumber>
-```
-
-Lookup code owners for a directory and its files.
+Lookup code owners given a definition inside a file.
 
 ### Options
 
