@@ -38,6 +38,30 @@ export type Declaration = {
     type: string;
 }
 
+export const findDeclarationByName = (suffix: string, sourceCode: string, defName: string): Declaration => {
+    selectParser(suffix);
+    const root = parser.parse(sourceCode);
+    const walker = root.walk();
+    return findDeclarationByNameRec(walker, defName);
+};
+
+const findDeclarationByNameRec = (walker: Parser.TreeCursor, defName: string): Declaration => {
+    if (supportedDeclarations.has(walker.currentNode.type)) {
+        const declarationAtNode = supportedDeclarations.get(walker.currentNode.type)(walker.currentNode.text);
+        if (declarationAtNode.name === defName) return declarationAtNode;
+    }
+
+    if (walker.gotoFirstChild()) {
+        do {
+            const declarationAtChild = findDeclarationByNameRec(walker.currentNode.walk(), defName);
+            if (declarationAtChild)
+                return declarationAtChild;
+        } while (walker.gotoNextSibling());
+    }
+
+    return null;
+};
+
 export const findDeclaration = (suffix: string, sourceCode: string, line: number): Declaration => {
     selectParser(suffix);
     const root = parser.parse(sourceCode);
