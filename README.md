@@ -27,7 +27,7 @@ Starting to work on a larger software project is often intimidating. We develope
 1. It makes it easy to find a person of contact that owns a specific definition within a file. Depending on the programming language a definition may be a function or method definition, a class declaration or an interface. A substantial algorithm is used to provide accurate results that take into account the entire history of a project.
 2. It provides a structured overview of a file/project that also includes information on code ownership.
 
-Codeowners works with Git repositories. It uses [Tree-sitter](http://tree-sitter.github.io/tree-sitter/) parsers to build Abstract Syntax Trees of code in a multitude of programming languages. [Programming languages supported by Codeowners](#language-support) include:
+Codeowners works with Git repositories. It uses [Tree-sitter](http://tree-sitter.github.io/tree-sitter/) parsers to build Abstract Syntax Trees of code written in a multitude of different programming languages. [Programming languages supported by Codeowners](#language-support) include:
 
 * Java
 * JavaScript
