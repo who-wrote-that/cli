@@ -1,6 +1,6 @@
 {
   "name": "codeowners-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "index.js",
   "repository": "git@github.com:antonbaumann/codeowners.git",
   "author": "Jonas Hübotter <me@jonhue.me>, Anton Baumann <anton@antonbaumann.com>",
@@ -30,6 +30,7 @@
   },
   "bin": {
     "codeowners": "lib/index.js",
+    "wtf": "lib/index.js",
     "diff-lines": "bin/diff-lines"
   },
   "devDependencies": {
