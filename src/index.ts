@@ -6,7 +6,7 @@ import {codeOwnersByLine, codeOwnersByDefName} from './codeowners';
 import {Owner} from './git';
 import {Declaration} from './parse';
 
-const VERSION = '0.1.0';
+const VERSION = '0.2.0';
 
 const validateDepth = (value: number): number => {
     if (value >= 0) {
