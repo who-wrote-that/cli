@@ -11,9 +11,6 @@ A command line tool to quickly find code owners of definitions (class/function/.
   * [`def`](#def)
   * [Options](#options)
   * [Language support](#language-support)
-* [Theory](#theory)
-  * [Algorithm](#algorithm)
-  * [Strategies](#strategies)
 * [Extensibility](#extensibility)
   * [Adding a new language](#adding-a-new-language)
 * [Development](#development)
@@ -81,12 +78,6 @@ Lookup code owners given a definition inside a file.
 * JavaScript
 * Python
 * Go
-
-## Theory
-
-### Algorithm
-
-### Strategies
 
 ## Extensibility
 
