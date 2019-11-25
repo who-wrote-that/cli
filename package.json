@@ -1,9 +1,9 @@
 {
-  "name": "codeowners-cli",
-  "version": "0.2.0",
+  "name": "who-wrote-that",
+  "version": "0.1.0",
   "main": "index.js",
-  "repository": "git@github.com:antonbaumann/codeowners.git",
-  "author": "Jonas Hübotter <me@jonhue.me>, Anton Baumann <anton@antonbaumann.com>",
+  "repository": "git@github.com:who-wrote-that/cli.git",
+  "author": "Anton Baumann <anton@antonbaumann.com>, Jonas Hübotter <jonas.huebotter@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir lib --extensions .ts",
@@ -11,8 +11,12 @@
     "eslint": "eslint src --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "wwt": "lib/index.js",
+    "diff-lines": "bin/diff-lines"
+  },
   "engines": {
-    "node": ">=10.0 <12.0"
+    "node": ">=10.0"
   },
   "dependencies": {
     "@babel/cli": "^7.7.4",
@@ -27,11 +31,6 @@
     "tree-sitter-javascript": "^0.15.1",
     "tree-sitter-python": "^0.15.0",
     "tree-sitter-typescript": "^0.15.1"
-  },
-  "bin": {
-    "codeowners": "lib/index.js",
-    "wtf": "lib/index.js",
-    "diff-lines": "bin/diff-lines"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.7.4",

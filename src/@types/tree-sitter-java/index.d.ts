@@ -1,1 +1,1 @@
-declare module 'tree-sitter-java';
+declare module 'tree-sitter-java'
