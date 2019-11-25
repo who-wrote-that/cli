@@ -1,5 +1,5 @@
-import Parser from 'tree-sitter'
-import { Declaration } from '../types'
+import Parser from 'tree-sitter';
+import { Declaration } from '../types';
 
 export type Language = {
   fileExtensions: string[];

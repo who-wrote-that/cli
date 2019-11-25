@@ -1,7 +1,7 @@
-import { Language } from './types'
-import Java from './Java'
+import { Language } from './types';
+import Java from './Java';
 
-const languages: Language[] = [Java]
+const languages: Language[] = [Java];
 
 export const getLanguage = (fileExtension: string): Language =>
-  languages.find(lang => lang.fileExtensions.includes(fileExtension))
+    languages.find(lang => lang.fileExtensions.includes(fileExtension));
