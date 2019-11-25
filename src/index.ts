@@ -48,7 +48,7 @@ const handleResult = (result: CodeOwners): void => {
 
 Program
     .version(`Who Wrote That ${VERSION}`, '-v, --version')
-    .description('Lookup code owners for classes, methods and more.')
+    .description('Lookup code owners of classes, methods and more.')
     .option(
         '-d, --depth <number>',
         'maximum recursive depth',
@@ -85,7 +85,7 @@ Program
 Program
     .command('line <file> <line>')
     .description(
-        'Lookup code owners for a declaration on a given line of a file.'
+        'Lookup code owners of a declaration on a given line of a file.'
     )
     .action((file, line) => {
         // codeOwnersByLine(file, line - 1, depth, strategy)
