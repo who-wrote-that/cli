@@ -4,20 +4,22 @@ import { Language } from './languages/types';
 
 export default class Parser {
     lang: Language;
-    parser: TreeSitter = new TreeSitter();
+    parser: TreeSitter;
 
     constructor(lang: Language) {
         this.lang = lang;
 
+        this.parser = new TreeSitter();
         this.parser.setLanguage(lang.parser);
     }
 
-    parse = (sourceCode: string): TreeSitter.SyntaxNode =>
-        this.parser.parse(sourceCode).rootNode;
+    parse(sourceCode: string): TreeSitter.SyntaxNode {
+        return this.parser.parse(sourceCode).rootNode;
+    }
 
-    findDeclarationByName = (
+    findDeclarationByName(
         node: TreeSitter.SyntaxNode, name: string
-    ): Declaration => {
+    ): Declaration {
         const decl = this.lang.findDeclaration(node);
         if (decl && decl.name === name) return decl;
 
@@ -29,10 +31,10 @@ export default class Parser {
         return null;
     };
 
-    findDeclarationByLine = (
+    findDeclarationByLine(
         node: TreeSitter.SyntaxNode,
         line: number
-    ): Declaration => {
+    ): Declaration {
         return node.namedChildren
             .map(child => {
                 if (
@@ -44,7 +46,7 @@ export default class Parser {
             .shift() || this.lang.findDeclaration(node);
     }
 
-    findSpans = (node: TreeSitter.SyntaxNode, decl: Declaration): Span[] => {
+    findSpans(node: TreeSitter.SyntaxNode, decl: Declaration): Span[] {
         const nestedSpans =
             node.namedChildren.map(child => this.findSpans(child, decl)).flat();
         const declAtNode = this.lang.findDeclaration(node);

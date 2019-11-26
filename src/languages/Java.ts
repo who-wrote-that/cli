@@ -11,7 +11,7 @@ const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
     case 'method_declaration':
         return {
             type: node.type,
-            name: node.nameNode.text,
+            name: node.getNameNode().text,
             from: node.startPosition.row,
             to: node.endPosition.row
         };

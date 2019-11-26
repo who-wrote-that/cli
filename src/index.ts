@@ -3,6 +3,7 @@
 import Program from 'commander';
 import chalk from 'chalk';
 import { CodeOwners, Format, Strategy } from './types';
+import WhoWroteThat from './WhoWroteThat';
 
 const VERSION = '0.1.0';
 
@@ -77,9 +78,10 @@ Program
     .command('decl <file> <name>')
     .description('Lookup code owners of a given declaration inside a file.')
     .action((file, name) => {
-        // codeOwnersByDefName(file, defName, depth, strategy)
-        //   .then(handleResult)
-        //   .catch(console.error)
+        new WhoWroteThat(file, Program.depth, Program.strategy, Program.format)
+              .decl(name)
+              .then(handleResult)
+              .catch(fail)
     });
 
 Program
@@ -88,9 +90,10 @@ Program
         'Lookup code owners of a declaration on a given line of a file.'
     )
     .action((file, line) => {
-        // codeOwnersByLine(file, line - 1, depth, strategy)
-        //   .then(handleResult)
-        //   .catch(console.error)
+        new WhoWroteThat(file, Program.depth, Program.strategy, Program.format)
+              .line(line - 1)
+              .then(handleResult)
+              .catch(fail)
     });
 
 Program.parse(process.argv);
