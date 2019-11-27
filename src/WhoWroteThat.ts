@@ -1,10 +1,6 @@
 import { CodeOwners, Declaration, Owner, Strategy } from './types';
 import { readFile, round } from './util';
-import {
-    commitsAffectingFile,
-    getOwnerOfCommit,
-    readFileAtCommit
-} from './git';
+import Git from './Git';
 import { getLanguage } from './languages';
 import Parser from './Parser';
 
@@ -33,7 +29,7 @@ export default class WhoWroteThat {
     }
 
     decl(name: string): Promise<CodeOwners> {
-        return commitsAffectingFile(this.filePath).then(commits => {
+        return Git.commitsAffectingFile(this.filePath).then(commits => {
             return readFile(this.filePath).then(sourceCode => {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
@@ -45,7 +41,7 @@ export default class WhoWroteThat {
     }
 
     line(line: number): Promise<CodeOwners> {
-        return commitsAffectingFile(this.filePath).then(commits => {
+        return Git.commitsAffectingFile(this.filePath).then(commits => {
             return readFile(this.filePath).then(sourceCode => {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
@@ -66,7 +62,7 @@ export default class WhoWroteThat {
             commitIndex >= commits.length
         ) return new Promise(resolve => resolve([]));
 
-        return readFileAtCommit(this.filePath, commits[commitIndex])
+        return Git.readFileAtCommit(this.filePath, commits[commitIndex])
             .then(sourceCodeAtCommit => {
                 const node = this.parser.parse(sourceCodeAtCommit);
                 const spans = this.parser.findSpans(node, decl);
@@ -76,7 +72,7 @@ export default class WhoWroteThat {
                 if (spans.length == 0) return [];
 
                 return Promise.all(
-                    spans.map(span => getOwnerOfCommit(
+                    spans.map(span => Git.getOwnerOfCommit(
                         this.filePath,
                         commits[commitIndex],
                         span
