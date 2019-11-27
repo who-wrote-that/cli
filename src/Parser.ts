@@ -36,12 +36,11 @@ export default class Parser {
         line: number
     ): Declaration {
         return node.namedChildren
-            .map(child => {
-                if (
-                    node.startPosition.row <= line &&
-                    node.endPosition.row >= line
-                ) return this.findDeclarationByLine(child, line);
+            .filter(child => {
+                return child.startPosition.row <= line &&
+                    child.endPosition.row >= line;
             })
+            .map(child => this.findDeclarationByLine(child, line))
             .filter(decl => decl !== null)
             .shift() || this.lang.findDeclaration(node);
     }
@@ -51,12 +50,14 @@ export default class Parser {
             node.namedChildren.map(child => this.findSpans(child, decl)).flat();
         const declAtNode = this.lang.findDeclaration(node);
 
-        if (declAtNode.name === decl.name && declAtNode.type === decl.type)
-            return [{
-                from: node.startPosition.row,
-                to: node.endPosition.row
-            }, ...nestedSpans];
-        else
-            return nestedSpans;
+        if (
+            declAtNode &&
+            declAtNode.name === decl.name &&
+            declAtNode.type === decl.type
+        ) return [{
+            from: node.startPosition.row,
+            to: node.endPosition.row
+        }, ...nestedSpans];
+        else return nestedSpans;
     }
 }
