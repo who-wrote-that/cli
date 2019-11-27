@@ -10,10 +10,17 @@ export type Owner = {
     score: number;
 }
 
+const MEGABYTE = 1024000;
+
+const execOptions = {
+    maxBuffer: 3 * MEGABYTE,
+};
+
 const getChangedLineNumbersAtCommit = (filePath: string, commitHash: string): Promise<number[]> => {
     return new Promise(resolve => {
         childProcess.exec(
             `git diff -U0 ${commitHash}~ ${commitHash} ./${filePath}`,
+            execOptions,
             err => {
                 if (!err) {
                     getDiff(`git diff -U0 ${commitHash}~ ${commitHash} ./${filePath} | diff-lines`)
@@ -37,7 +44,9 @@ const getChangedLineNumbersAtCommit = (filePath: string, commitHash: string): Pr
 
 const getDiff = (command: string): Promise<number[]> => {
     return new Promise((resolve, reject) => {
-        childProcess.exec(command,
+        childProcess.exec(
+            command,
+            execOptions,
             (err, data) => {
                 !err ? resolve(data.split('\n').map(n => parseInt(n)).filter(n => !isNaN(n))) : reject(err);
             });
@@ -48,6 +57,7 @@ const getAuthorOfCommit = (commitHash: string): Promise<Author> => {
     return new Promise((resolve, reject) => {
         childProcess.exec(
             `git show ${commitHash} | grep Author`,
+            execOptions,
             (err, data) => {
                 if (!err) {
                     const line = data.split('\n')[0];
@@ -67,6 +77,7 @@ export const commitsAffectingFile = (filePath: string): Promise<string[]> => {
     return new Promise((resolve, reject) => {
         childProcess.exec(
             `git log --follow ./${filePath} | grep commit`,
+            execOptions,
             (err, data) => !err ? resolve(data.split('\n').map(line => line.replace('commit ', ''))) : reject(err)
         );
     });
@@ -76,6 +87,7 @@ export const readFileAtCommit = (filePath: string, commitHash: string): Promise<
     return new Promise((resolve, reject) => {
         childProcess.exec(
             `git show ${commitHash}:./${filePath}`,
+            execOptions,
             (err, data) => !err ? resolve(data) : reject(err)
         );
     });
