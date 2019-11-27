@@ -1,14 +1,14 @@
-# Codeowners CLI
+# Who Wrote That CLI
 
-A command line tool to quickly find code owners of definitions (class/function/...), files, and directories.
+A command line tool to quickly lookup code owners of classes, methods and more.
 
 ### What you'll find in this document:
 
 * [Inspiration](#inspiration)
 * [Usage](#usage)
   * [Installation](#installation)
+  * [`decl`](#decl)
   * [`line`](#line)
-  * [`def`](#def)
   * [Options](#options)
   * [Language support](#language-support)
 * [Extensibility](#extensibility)
@@ -18,49 +18,39 @@ A command line tool to quickly find code owners of definitions (class/function/.
 
 ## Inspiration
 
-Starting to work on a larger software project is often intimidating. We developed this powerful tool to make it easier for programmers to get familiar with a new project. Codeowners is aiming to attack this problem on multiple levels:
+Starting to work on a larger software project is often intimidating. Who Wrote That makes it easy to find a person of contact that owns a specific declaration within a file. Depending on the programming language a declaration may be a function, method, class or interface declaration.
 
-1. It makes it easy to find a person of contact that owns a specific definition within a file. Depending on the programming language a definition may be a function or method definition, a class declaration or an interface. A substantial algorithm is used to provide accurate results that take into account the entire history of a project.
-2. It provides a structured overview of a file/project that also includes information on code ownership.
-
-Codeowners works with Git repositories. It uses [Tree-sitter](http://tree-sitter.github.io/tree-sitter/) parsers to build Abstract Syntax Trees of code written in a multitude of different programming languages. [Programming languages supported by Codeowners](#language-support) include:
-
-* Java
-* JavaScript
-* Python
-* Go
-
-One of the core design-principles is to keep the effort required to [add support for a new programming language](#adding-a-new-language) to a bare minimum.
+Who Wrote That works with Git repositories. It uses [Tree-sitter](http://tree-sitter.github.io/tree-sitter/) parsers to build Abstract Syntax Trees of code written in a [multitude of different programming languages](#language-support).
 
 ## Usage
 
-To use Codeowners with your directory or file, it must be or be located within a Git repository and it must use one of the [supported programming languages](#language-support).
+To use Who Wrote That with your directory or file, it must be or be located within a Git repository and it must use one of the [supported programming languages](#language-support).
 
 ### Installation
 
-You can install Codeowners globally with Yarn
+You can install Who Wrote That globally with Yarn
 
-    $ yarn global add codeowners
+    $ yarn global add who-wrote-that
 
 or NPM
 
-    $ npm install -g codeowners
+    $ npm install -g who-wrote-that
+
+### `decl`
+
+```
+wwt decl <file> <definition>
+```
+
+Lookup code owners of a given declaration inside a file.
 
 ### `line`
 
 ```
-codeowners line <file> <lineNumber>
+wwt line <file> <lineNumber>
 ```
 
-Lookup code owners for a specific line of a file.
-
-### `def`
-
-```
-codeowners def <file> <definition>
-```
-
-Lookup code owners given a definition inside a file.
+Lookup code owners of a declaration on a given line of a file.
 
 ### Options
 
@@ -74,10 +64,10 @@ Lookup code owners given a definition inside a file.
 
 ### Language support
 
+* Go
 * Java
 * JavaScript
 * Python
-* Go
 
 ## Extensibility
 
@@ -86,11 +76,11 @@ Lookup code owners given a definition inside a file.
 To add support for a new language
 
 * create a language file in `src/languages`;
-* and add the language to `supportedLanguages` in `src/parse.ts`.
+* and import the language file in `src/languages/index.ts`.
 
 ## Development
 
-Listen to changes and make them accessible through `codeowners` from the command line:
+Listen to changes and make them accessible through `wwt` from the command line:
 
     $ yarn start
 
