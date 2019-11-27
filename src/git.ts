@@ -95,8 +95,8 @@ export const readFileAtCommit = (
         `git show ${commitHash}:./${filePath}`,
         execOptions,
         (err, data) => !err ? resolve(data) : reject(err)
-    )
-})
+    );
+});
 
 export const getOwnerOfCommit = (
     filePath: string,

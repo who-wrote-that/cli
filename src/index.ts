@@ -78,10 +78,10 @@ Program
     .command('decl <file> <name>')
     .description('Lookup code owners of a given declaration inside a file.')
     .action((file, name) => {
-        new WhoWroteThat(file, Program.depth, Program.strategy, Program.format)
-              .decl(name)
-              .then(handleResult)
-              .catch(fail)
+        new WhoWroteThat(file, Program.depth, Program.strategy, fail)
+            .decl(name)
+            .then(handleResult)
+            .catch(fail);
     });
 
 Program
@@ -90,10 +90,10 @@ Program
         'Lookup code owners of a declaration on a given line of a file.'
     )
     .action((file, line) => {
-        new WhoWroteThat(file, Program.depth, Program.strategy, Program.format)
-              .line(line - 1)
-              .then(handleResult)
-              .catch(fail)
+        new WhoWroteThat(file, Program.depth, Program.strategy, fail)
+            .line(line - 1)
+            .then(handleResult)
+            .catch(fail);
     });
 
 Program.parse(process.argv);
