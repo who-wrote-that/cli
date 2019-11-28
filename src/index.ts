@@ -1,93 +1,101 @@
 #!/usr/bin/env node
 
-import commander from 'commander';
+import Program from 'commander';
 import chalk from 'chalk';
-import {codeOwnersByLine, codeOwnersByDefName} from './codeowners';
-import {Owner} from './git';
-import {Declaration} from './parse';
+import { CodeOwners, Format, Strategy } from './types';
+import WhoWroteThat from './WhoWroteThat';
 
-const VERSION = '0.2.0';
+const VERSION = '0.1.0';
 
-const validateDepth = (value: number): number => {
-    if (value >= 0) {
-        return value;
-    } else {
-        console.error('`depth` may not be negative');
-        process.exit(1);
-    }
+const validate = (valid: (value: any) => boolean, message: string) =>
+    (value: any): any =>
+        valid(value) ? value : fail(message);
+
+const fail = (error: string): void => {
+    if (Program.format === Format.JSON)
+        console.error(JSON.stringify({ error }));
+    else
+        console.error(error);
+
+    process.exit(1);
 };
 
-const validateFormat = (value: string): string => {
-    if (['pretty', 'data', 'json'].includes(value)) {
-        return value;
-    } else {
-        console.error('`format` must be one of `\'pretty\'`, `\'data\'` or `\'json\'`');
-        process.exit(1);
-    }
-};
-
-const validateStrategy = (value: string): string => {
-    if (['weighted-lines', 'lines'].includes(value)) {
-        return value;
-    } else {
-        console.error('`strategy` must be one of `\'weighted-lines\'` or `\'lines\'`');
-        process.exit(1);
-    }
-};
-
-const handleResult = (result: {def: Declaration; owners: Owner[]}, format: string): void => {
-    if (format === 'data') {
-        console.dir(result, {depth: null});
-    } else if (format === 'json') {
+const handleResult = (result: CodeOwners): void => {
+    if (Program.format === Format.DATA) {
+        console.dir(result, { depth: null });
+    } else if (Program.format === Format.JSON) {
         console.log(JSON.stringify(result));
-    } else if (format === 'pretty') {
-        if (result.def) {
-            console.log(`${chalk.underline.bold(result.def.name)} ${chalk.gray(':: ' + result.def.type)}`);
-        } else {
-            console.error('Given line number does not yield a supported declaration');
-            process.exit(1);
-        }
+    } else if (Program.format === Format.PRETTY) {
+        if (result.declaration)
+            console.log(
+                `${chalk.underline.bold(result.declaration.name)} ` +
+                    `${chalk.gray(':: ' + result.declaration.type)}`
+            );
+        else
+            fail('Given line number does not yield a supported declaration');
 
         if (result.owners.length > 0) {
             console.log(
                 result.owners.map(owner => {
-                    return `  ${owner.score}\t - ${owner.author.name} (${owner.author.email})`;
+                    return `  ${owner.score}\t - ${owner.author.name} ` +
+                        `(${owner.author.email})`;
                 }).join('\n')
             );
         } else {
-            console.error('No one can claim ownership over this definition!');
-            process.exit(1);
+            fail('No one can claim ownership over this definition!');
         }
     }
 };
 
-commander
-    .version(`Codeowners ${VERSION}`, '-v, --version');
+Program
+    .version(`Who Wrote That ${VERSION}`, '-v, --version')
+    .description('Lookup code owners of classes, methods and more.')
+    .option(
+        '-d, --depth <number>',
+        'maximum recursive depth',
+        validate((value: number) => value > 0, '`depth` has to be positive')
+    )
+    .option(
+        '-f, --format <pretty|data|json>',
+        'output format',
+        validate(
+            (value: Format) => Object.values(Format).includes(value),
+            '`format` must be one of `pretty`, `data` or `json`'
+        ),
+        Format.PRETTY
+    )
+    .option(
+        '-s, --strategy <weighted-lines|lines>',
+        'strategy to be used to evaluate code owners',
+        validate(
+            (value: Strategy) => Object.values(Strategy).includes(value),
+            '`strategy` must be one of `weighted-lines` or `lines`'
+        ),
+        Strategy.WEIGHTED_LINES
+    );
 
-commander
+Program
+    .command('decl <file> <name>')
+    .description('Lookup code owners of a given declaration inside a file.')
+    .action((file, name) => {
+        new WhoWroteThat(file, Program.depth, Program.strategy, fail)
+            .decl(name)
+            .then(handleResult)
+            .catch(fail);
+    });
+
+Program
     .command('line <file> <line>')
-    .option('-d, --depth <number>', 'Maximum recursive depth.', validateDepth)
-    .option('-f, --format <format>', 'Output format. Choose between `\'pretty\'` (default), `\'data\'` and `\'json\'`.', validateFormat, 'pretty')
-    .option('-s, --strategy <strategy>', 'Strategy to be used to evaluate codeowners. Choose between `\'weighted-lines\'` (default) and `\'lines\'`', validateStrategy, 'weighted-lines')
-    .description('Lookup code owners for a specific line of a file.')
-    .action((file, line, {depth, format, strategy}) => {
-        codeOwnersByLine(file, line - 1, depth, strategy)
-            .then(result => handleResult(result, format))
-            .catch(console.error);
+    .description(
+        'Lookup code owners of a declaration on a given line of a file.'
+    )
+    .action((file, line) => {
+        new WhoWroteThat(file, Program.depth, Program.strategy, fail)
+            .line(line - 1)
+            .then(handleResult)
+            .catch(fail);
     });
 
-commander
-    .command('def <file> <definition>')
-    .option('-d, --depth <number>', 'Maximum recursive depth.', validateDepth)
-    .option('-f, --format <format>', 'Output format. Choose between `\'pretty\'` (default), `\'data\'` and `\'json\'`.', validateFormat, 'pretty')
-    .option('-s, --strategy <strategy>', 'Strategy to be used to evaluate codeowners. Choose between `\'weighted-lines\'` (default) and `\'lines\'`', validateStrategy, 'weighted-lines')
-    .description('Lookup code owners given a definition inside a file.')
-    .action((file, defName, {depth, format, strategy}) => {
-        codeOwnersByDefName(file, defName, depth, strategy)
-            .then(result => handleResult(result, format))
-            .catch(console.error);
-    });
+Program.parse(process.argv);
 
-commander.parse(process.argv);
-
-if (commander.args.length == 0) commander.help();
+if (Program.args.length == 0) Program.help();

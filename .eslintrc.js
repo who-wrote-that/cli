@@ -37,6 +37,9 @@ module.exports = {
             'error',
             'always'
         ],
-        '@typescript-eslint/no-use-before-define': 'off'
+        'max-len': 'error',
+        '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/no-use-before-define': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
     }
 };
