@@ -4,6 +4,7 @@ import { Declaration } from '../types';
 
 const extractClassDeclarationName = (node: Parser.SyntaxNode): string => {
     const indexClassToken = node.text.indexOf('class');
+    // Remove everything from the string until `class ` (inclusive)
     const elements = node.text.substring(indexClassToken + 6).split(' ');
     return elements.filter(element => element !== '').shift();
 };
