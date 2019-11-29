@@ -13,9 +13,9 @@ const extractTypeDeclarationName = (node: Parser.SyntaxNode): string => {
         package: (package_identifier)
         name: (type_identifier)))
     */
-    const typeSpec = node.children
+    const typeSpec = node.namedChildren
         .filter(child => child.type === 'type_spec')[0];
-    return typeSpec.children
+    return typeSpec.namedChildren
         .filter(child => child.type === 'type_identifier')[0]
         .text;
 };
@@ -27,7 +27,9 @@ const extractFunctionDeclarationName = (node: Parser.SyntaxNode): string => {
     (parameter_list)
     (block))
     */
-    return node.children.filter(child => child.type === 'identifier')[0].text;
+    return node.namedChildren
+        .filter(child => child.type === 'identifier')[0]
+        .text;
 };
 
 const extractMethodDeclarationName = (node: Parser.SyntaxNode): string => {
@@ -41,7 +43,7 @@ const extractMethodDeclarationName = (node: Parser.SyntaxNode): string => {
     (type_identifier)
     (block))
     */
-    return node.children
+    return node.namedChildren
         .filter(child => child.type === 'field_identifier')[0]
         .text;
 };
