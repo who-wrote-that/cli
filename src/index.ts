@@ -72,7 +72,8 @@ Program
             '`strategy` must be one of `weighted-lines` or `lines`'
         ),
         Strategy.WEIGHTED_LINES
-    );
+    )
+    .action(() => Program.help());
 
 Program
     .command('decl <file> <name>')
