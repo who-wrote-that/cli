@@ -58,7 +58,7 @@ Lookup code owners of a declaration on a given line of a file.
 | ------ | ----------- |
 | `-d --depth <number>` | The maxmium recursive depth of the [code owner algorithm](#algorithm) (e.g. the number of commits to look back in history). Takes a positive number. Defaults to `undefined` -- unlimited recursive depth. |
 | `-f --format <format>` | Output format. Allowed values are `pretty`, `data`, and `json`. Defaults to `pretty`. |
-| `-s --strategy` | [Strategy](#strategies) used for the [code owner algorithm](#algorithm). Allowed values are `weighted-lines`, and `lines`. Defaults to `weighted-lines`. |
+| `-s --strategy <strategy>` | [Strategy](#strategies) used for the [code owner algorithm](#algorithm). Allowed values are `weighted-lines`, and `lines`. Defaults to `weighted-lines`. |
 | `-v --version` | Outputs the version number |
 | `-h --help` | Outputs usage information |
 
