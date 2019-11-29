@@ -99,10 +99,15 @@ export default class WhoWroteThat {
 
 const transformResult = (result: CodeOwners): CodeOwners => ({
     ...result,
-    owners: squish(
-        result.owners
-            .sort((a, b) => a.score < b.score ? 1 : -1)
-    ).filter(owner => owner.score > 0)
+    owners: result.owners.map(owner => ({
+        ...owner,
+        score: relativeScore(
+            owner.score,
+            result.declaration.to - result.declaration.from
+        )
+    }))
+        .sort((a, b) => a.score < b.score ? 1 : -1)
+        .filter(owner => owner.score > 0)
 });
 
 const scale = (
@@ -128,14 +133,8 @@ const weight = (strategy: Strategy, owners: Owner[]): number => {
         return null;
 };
 
-const squish = (owners: Owner[]): Owner[] => {
-    const maxScore = Math.max(...owners.map(owner => owner.score));
-
-    return owners.map(owner => ({
-        ...owner,
-        score: round(0, 100 * owner.score / maxScore)
-    }));
-};
+const relativeScore = (score: number, lineCount: number): number =>
+    round(0, 100 * score / lineCount);
 
 const mergeDuplicateOwners = (owners: Owner[]): Owner[] => {
     const emails = new Set(owners.map(owner => owner.author.email));
