@@ -20,15 +20,15 @@ export default class Parser {
     findDeclarationByName(
         node: TreeSitter.SyntaxNode, name: string
     ): Declaration {
-        const decl = this.lang.findDeclaration(node);
+        let decl = this.lang.findDeclaration(node);
         if (decl && decl.name === name) return decl;
 
         node.namedChildren.forEach(child => {
-            const declAtChild = this.findDeclarationByName(child, name);
-            if (declAtChild) return declAtChild;
+            decl = this.findDeclarationByName(child, name);
+            if (decl) return;
         });
 
-        return null;
+        return decl;
     }
 
     findDeclarationByLine(
