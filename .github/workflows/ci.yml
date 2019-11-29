@@ -24,3 +24,5 @@ jobs:
         run: yarn eslint
       - name: Run TypeScript
         run: yarn tsc
+      - name: Build
+        run: yarn build
