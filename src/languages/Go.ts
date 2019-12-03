@@ -55,8 +55,10 @@ const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
     const declaration: Declaration = {
         type: node.type,
         name: null,
-        from: node.startPosition.row,
-        to: node.endPosition.row
+        span: {
+            from: node.startPosition.row,
+            to: node.endPosition.row
+        }
     };
 
     switch (node.type) {

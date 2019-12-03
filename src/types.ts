@@ -6,8 +6,7 @@ export type Span = {
 export type Declaration = {
   name: string;
   type: string;
-  from: number;
-  to: number;
+  span: Span;
 }
 
 export type Author = {

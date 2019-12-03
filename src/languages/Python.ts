@@ -22,8 +22,10 @@ const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
             name: node.type === 'class_definition' ?
                 extractClassDefinitionName(node) :
                 extractFunctionDefinitionName(node),
-            from: node.startPosition.row,
-            to: node.endPosition.row
+            span: {
+                from: node.startPosition.row,
+                to: node.endPosition.row
+            }
         };
     }
 };
