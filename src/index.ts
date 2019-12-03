@@ -28,9 +28,9 @@ const handleResult = (result: CodeOwners): void => {
     } else if (Program.format === Format.PRETTY) {
         if (result.declaration) {
             const range =
-                `[${result.declaration.from}-${result.declaration.to}] `;
+                `[${result.declaration.from}-${result.declaration.to}]`;
             console.log(
-                `${chalk.gray(range)}` +
+                `${chalk.gray(range)} ` +
                 `${chalk.underline.bold(result.declaration.name)} ` +
                 `${chalk.gray(':: ' + result.declaration.type)}`
             );
