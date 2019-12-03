@@ -103,7 +103,7 @@ const transformResult = (result: CodeOwners): CodeOwners => ({
         ...owner,
         score: relativeScore(
             owner.score,
-            result.declaration.to - result.declaration.from
+            result.declaration.span.to - result.declaration.span.from
         )
     }))
         .sort((a, b) => a.score < b.score ? 1 : -1)

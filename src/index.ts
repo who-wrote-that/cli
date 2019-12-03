@@ -27,8 +27,8 @@ const handleResult = (result: CodeOwners): void => {
         console.log(JSON.stringify(result));
     } else if (Program.format === Format.PRETTY) {
         if (result.declaration) {
-            const range =
-                `[${result.declaration.from}-${result.declaration.to}]`;
+            const range = `[${result.declaration.span.from}-` +
+                `${result.declaration.span.to}]`;
             console.log(
                 `${chalk.gray(range)} ` +
                 `${chalk.underline.bold(result.declaration.name)} ` +
