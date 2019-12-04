@@ -3343,10 +3343,10 @@ touch@^3.1.0:
   dependencies:
     nopt "~1.0.10"
 
-tree-sitter-go@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/tree-sitter-go/-/tree-sitter-go-0.15.0.tgz#d10b122c6ad58638b42b608b9d2d22899f8fe904"
-  integrity sha512-booht80IETCTTj79Yeicr0UmH9DhZeg8IA58Cf8evuARatbebsUQdh4Zg49Ye+15zVD663/LM+NxkmnJLfq2Rw==
+tree-sitter-go@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/tree-sitter-go/-/tree-sitter-go-0.15.1.tgz#51ad116d7fab4519d73b6381f608ee00d1fefa43"
+  integrity sha512-TCwvh7kz+2iMUjZI7aPnpImv5PFcWdbo8hJysjwV7FUlCTGeCgca2ItdxA5cdACcykRVLzoUTZN70qFGwYVQVw==
   dependencies:
     nan "^2.10.0"
 
