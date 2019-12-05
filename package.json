@@ -38,6 +38,6 @@
     "core-js": "^3.4.7",
     "eslint": "^6.7.2",
     "nodemon": "^2.0.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   }
 }
