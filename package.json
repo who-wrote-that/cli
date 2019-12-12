@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "^2.11.0",
     "core-js": "^3.4.8",
     "eslint": "^6.7.2",
-    "nodemon": "^2.0.1",
+    "nodemon": "^2.0.2",
     "typescript": "^3.7.3"
   }
 }
