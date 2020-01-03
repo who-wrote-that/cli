@@ -1,6 +1,7 @@
 import Parser from 'tree-sitter';
 import TreeSitterGo from 'tree-sitter-go';
 import { Declaration } from '../types';
+import { findDeclaration } from './util';
 
 const NODE_TYPES = Object.freeze([
     'function_declaration',
@@ -13,16 +14,8 @@ const NODE_TYPES = Object.freeze([
 const fileExtensions = ['go'];
 const parser = TreeSitterGo;
 
-const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
-    if (NODE_TYPES.includes(node.type))
-        return {
-            type: node.type,
-            name: node.nameNode.text,
-            span: {
-                from: node.startPosition.row,
-                to: node.endPosition.row
-            }
-        };
+export default {
+    fileExtensions,
+    parser,
+    findDeclaration: findDeclaration(NODE_TYPES)
 };
-
-export default { fileExtensions, parser, findDeclaration };
