@@ -1,33 +1,16 @@
-import Parser from 'tree-sitter';
 import TreeSitterPython from 'tree-sitter-python';
-import { Declaration } from '../types';
+import { findDeclaration } from './util';
 
-const extractClassDefinitionName = (node: Parser.SyntaxNode): string => {
-    return node.text.replace('class ', '').split(':')[0];
-};
-
-const extractFunctionDefinitionName = (node: Parser.SyntaxNode): string => {
-    return node.text.replace('def ', '').split('(')[0];
-};
+const NODE_TYPES = Object.freeze([
+    'function_definition',
+    'class_definition',
+]);
 
 const fileExtensions = ['py'];
 const parser = TreeSitterPython;
 
-const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
-    switch (node.type) {
-    case 'class_definition':
-    case 'method_definition':
-        return {
-            type: node.type,
-            name: node.type === 'class_definition' ?
-                extractClassDefinitionName(node) :
-                extractFunctionDefinitionName(node),
-            span: {
-                from: node.startPosition.row,
-                to: node.endPosition.row
-            }
-        };
-    }
+export default {
+    fileExtensions,
+    parser,
+    findDeclaration: findDeclaration(NODE_TYPES)
 };
-
-export default { fileExtensions, parser, findDeclaration };

@@ -1,40 +1,24 @@
-import Parser from 'tree-sitter';
 import TreeSitterJava from 'tree-sitter-java';
-import { Declaration } from '../types';
+import { findDeclaration } from './util';
 
-const extractClassDeclarationName = (node: Parser.SyntaxNode): string => {
-    const indexClassToken = node.text.indexOf('class');
-    // Remove everything from the string until `class ` (inclusive)
-    const elements = node.text.substring(indexClassToken + 6).split(' ');
-    return elements.filter(element => element !== '').shift();
-};
-
-const extractMethodDeclarationName = (node: Parser.SyntaxNode): string => {
-    const text = node.text.split('\n')
-        .filter(line => !line.trim().startsWith('@')).join('\n');
-    const indexFirstBracket = text.indexOf('(');
-    const elements = text.substring(0, indexFirstBracket).split(' ');
-    return elements.filter(element => element !== '').pop();
-};
+const NODE_TYPES = Object.freeze([
+    'marker_annotation',
+    'annotation',
+    'enum_declaration',
+    'enum_constant',
+    'class_declaration',
+    'annotation_type_declaration',
+    'annotation_type_element_declaration',
+    'interface_declaration',
+    'constructor_declaration',
+    'method_declaration'
+]);
 
 const fileExtensions = ['java'];
 const parser = TreeSitterJava;
 
-const findDeclaration = (node: Parser.SyntaxNode): Declaration => {
-    switch (node.type) {
-    case 'class_declaration':
-    case 'method_declaration':
-        return {
-            type: node.type,
-            name: node.type === 'class_declaration' ?
-                extractClassDeclarationName(node) :
-                extractMethodDeclarationName(node),
-            span: {
-                from: node.startPosition.row,
-                to: node.endPosition.row
-            }
-        };
-    }
+export default {
+    fileExtensions,
+    parser,
+    findDeclaration: findDeclaration(NODE_TYPES)
 };
-
-export default { fileExtensions, parser, findDeclaration };
