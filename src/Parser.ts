@@ -1,4 +1,4 @@
-import TreeSitter, {SyntaxNode} from 'tree-sitter';
+import TreeSitter from 'tree-sitter';
 import { Declaration, Span } from './types';
 import { Language } from './languages/types';
 
