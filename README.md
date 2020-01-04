@@ -68,6 +68,7 @@ Lookup code owners of a declaration on a given line of a file.
 * Java
 * JavaScript
 * Python
+* TypeScript
 
 ## Extensibility
 
