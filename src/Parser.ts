@@ -1,4 +1,4 @@
-import TreeSitter from 'tree-sitter';
+import TreeSitter, {SyntaxNode} from 'tree-sitter';
 import { Declaration, Span } from './types';
 import { Language } from './languages/types';
 
@@ -23,13 +23,12 @@ export default class Parser {
         const decl = this.lang.findDeclaration(node);
         if (decl && decl.name === name) return decl;
 
-        let newDecl;
-        node.namedChildren.forEach(child => {
-            newDecl = this.findDeclarationByName(child, name);
-            if (newDecl) return;
-        });
+        for (const child of node.namedChildren) {
+            const newDecl = this.findDeclarationByName(child, name);
+            if (newDecl) return newDecl;
+        }
 
-        return newDecl ? newDecl : decl;
+        return decl;
     }
 
     findDeclarationByLine(
