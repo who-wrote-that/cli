@@ -1,6 +1,4 @@
-import Parser from 'tree-sitter';
 import TreeSitterJavaScript from 'tree-sitter-javascript';
-import { Declaration } from '../types';
 import { findDeclaration } from './util';
 
 const NODE_TYPES = Object.freeze([
