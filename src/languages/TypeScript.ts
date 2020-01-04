@@ -9,6 +9,12 @@ const NODE_TYPES = Object.freeze([
     'generator_function',
     'generator_function_declaration',
     'method_definition',
+    'abstract_class_declaration',
+    'interface_declaration',
+    'enum_declaration',
+    'type_alias_declaration',
+    'property_signature',
+    'module',
 ]);
 
 const fileExtensions = ['ts'];
