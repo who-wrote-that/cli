@@ -81,7 +81,7 @@ export default class Git {
         return new Promise((resolve, reject) => {
             // --pretty=format:"%H"
             // only show commit hashes
-            // https://git-scm.com/docs/pretty-formats#Documentation/pretty-formats.txt-H
+            // https://git-scm.com/docs/pretty-formats
             childProcess.exec(
                 `git log --follow --pretty=format:"%H" ./${filePath}`,
                 EXEC_OPTIONS,
