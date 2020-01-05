@@ -1,5 +1,5 @@
 import childProcess from 'child_process';
-import { Author, Owner, Span } from './types';
+import {Author, Owner, Span} from './types';
 
 const MEGABYTE = 1024000;
 
@@ -70,7 +70,7 @@ export default class Git {
                             line.lastIndexOf('<') + 1,
                             line.lastIndexOf('>')
                         );
-                        resolve({ name, email });
+                        resolve({name, email});
                     } else reject(err);
                 }
             );
@@ -79,17 +79,15 @@ export default class Git {
 
     static commitsAffectingFile(filePath: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
+            // --pretty=format:"%H"
+            // only show commit hashes
+            // https://git-scm.com/docs/pretty-formats#Documentation/pretty-formats.txt-H
             childProcess.exec(
-                `git log --follow ./${filePath} | grep commit`,
+                `git log --follow --pretty=format:"%H" ./${filePath}`,
                 EXEC_OPTIONS,
                 (err, data) => {
-                    if (!err)
-                        resolve(
-                            data.split('\n')
-                                .map(line => line.replace('commit ', ''))
-                        );
-                    else
-                        reject(err);
+                    if (!err) resolve(data.split('\n'));
+                    else reject(err);
                 }
             );
         });
