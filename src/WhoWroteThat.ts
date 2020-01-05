@@ -34,7 +34,7 @@ export default class WhoWroteThat {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
                     this.parser.findDeclarationByName(rootNode, name);
-                return this.rec(declaration, commits, 0)
+                return this.getDclarationOwners(declaration, commits, 0)
                     .then(owners => ({ declaration, owners }));
             }).then(transformResult);
         });
@@ -46,13 +46,13 @@ export default class WhoWroteThat {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
                     this.parser.findDeclarationByLine(rootNode, line);
-                return this.rec(declaration, commits, 0)
+                return this.getDclarationOwners(declaration, commits, 0)
                     .then(owners => ({ declaration, owners }));
             }).then(transformResult);
         });
     }
 
-    private rec(
+    private getDclarationOwners(
         decl: Declaration,
         commits: string[],
         commitIndex: number
@@ -80,15 +80,18 @@ export default class WhoWroteThat {
                 )
                     .then(mergeDuplicateOwners)
                     .then(owners => {
-                        return this.rec(decl, commits, commitIndex + 1)
-                            .then(newOwners => mergeDuplicateOwners([
-                                ...owners,
-                                ...scale(
-                                    this.strategy,
-                                    newOwners,
-                                    weight(this.strategy, owners)
-                                )
-                            ]));
+                        return this.getDclarationOwners(
+                            decl,
+                            commits,
+                            commitIndex + 1
+                        ).then(newOwners => mergeDuplicateOwners([
+                            ...owners,
+                            ...scale(
+                                this.strategy,
+                                newOwners,
+                                weigh(this.strategy, owners)
+                            )
+                        ]));
                     });
             }).catch(() => {
                 // file could not be read at HEAD~commitIndex
@@ -124,7 +127,7 @@ const scale = (
         return owners;
 };
 
-const weight = (strategy: Strategy, owners: Owner[]): number => {
+const weigh = (strategy: Strategy, owners: Owner[]): number => {
     if (strategy === Strategy.WEIGHTED_LINES)
         return owners
             .map(owner => owner.score)
