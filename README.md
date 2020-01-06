@@ -52,6 +52,14 @@ wwt line <file> <lineNumber>
 
 Lookup code owners of a declaration on a given line of a file.
 
+### `file`
+
+```
+wwt file <file> 
+```
+
+Lookup code owners of a given file.
+
 ### Options
 
 | Option | Description |
