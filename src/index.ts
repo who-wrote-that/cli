@@ -100,6 +100,18 @@ Program
             .catch(fail);
     });
 
+Program
+    .command('file <file>')
+    .description(
+        'Lookup code owners of a file.'
+    )
+    .action(file => {
+        new WhoWroteThat(file, Program.depth, Program.strategy, fail)
+            .file()
+            .then(handleResult)
+            .catch(fail);
+    });
+
 Program.parse(process.argv);
 
 if (Program.args.length == 0) Program.help();

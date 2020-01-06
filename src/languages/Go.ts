@@ -1,5 +1,5 @@
 import TreeSitterGo from 'tree-sitter-go';
-import { findDeclaration } from './util';
+import {findDeclaration} from './util';
 
 const NODE_TYPES = Object.freeze([
     'function_declaration',
