@@ -1,7 +1,7 @@
-import { CodeOwners, Declaration, Owner, Strategy } from './types';
-import { readFile, round } from './util';
+import {CodeOwners, Declaration, Owner, Strategy} from './types';
+import {readFile, round} from './util';
 import Git from './Git';
-import { getLanguage } from './languages';
+import {getLanguage} from './languages';
 import Parser from './Parser';
 
 export default class WhoWroteThat {
@@ -34,7 +34,7 @@ export default class WhoWroteThat {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
                     this.parser.findDeclarationByName(rootNode, name);
-                return this.getDclarationOwners(declaration, commits, 0)
+                return this.getDeclarationOwners(declaration, commits, 0)
                     .then(owners => ({ declaration, owners }));
             }).then(transformResult);
         });
@@ -46,13 +46,56 @@ export default class WhoWroteThat {
                 const rootNode = this.parser.parse(sourceCode);
                 const declaration =
                     this.parser.findDeclarationByLine(rootNode, line);
-                return this.getDclarationOwners(declaration, commits, 0)
+                return this.getDeclarationOwners(declaration, commits, 0)
                     .then(owners => ({ declaration, owners }));
             }).then(transformResult);
         });
     }
 
-    private getDclarationOwners(
+    file(): Promise<CodeOwners> {
+        return Git.commitsAffectingFile(this.filePath).then(commits => {
+            return readFile(this.filePath).then(sourceCode => {
+                const rootNode = this.parser.parse(sourceCode);
+                const declaration = {
+                    type: rootNode.type,
+                    name: this.filePath.split('/').pop(),
+                    span: {
+                        from: rootNode.startPosition.row,
+                        to: rootNode.endPosition.row
+                    }
+                };
+                return this.getFileOwners(declaration, commits, 0)
+                    .then(owners => ({declaration, owners}));
+            }).then(transformResult);
+        });
+    }
+
+    private getFileOwners(
+        decl: Declaration,
+        commits: string[],
+        commitIndex: number
+    ): Promise<Owner[]> {
+        if (commitIndex >= commits.length)
+            return new Promise(resolve => resolve([]));
+
+        return Git.getOwnerOfCommit(
+            this.filePath,
+            commits[commitIndex],
+            decl.span,
+        ).then(owner => {
+            return this.getFileOwners(decl, commits, commitIndex + 1)
+                .then(newOwners => mergeDuplicateOwners([
+                    owner,
+                    ...scale(
+                        this.strategy,
+                        newOwners,
+                        weigh(this.strategy, [owner])
+                    )
+                ]));
+        });
+    }
+
+    private getDeclarationOwners(
         decl: Declaration,
         commits: string[],
         commitIndex: number
@@ -61,7 +104,6 @@ export default class WhoWroteThat {
             this.depth && commitIndex >= this.depth ||
             commitIndex >= commits.length
         ) return new Promise(resolve => resolve([]));
-
         return Git.readFileAtCommit(this.filePath, commits[commitIndex])
             .then(sourceCodeAtCommit => {
                 const node = this.parser.parse(sourceCodeAtCommit);
@@ -80,7 +122,7 @@ export default class WhoWroteThat {
                 )
                     .then(mergeDuplicateOwners)
                     .then(owners => {
-                        return this.getDclarationOwners(
+                        return this.getDeclarationOwners(
                             decl,
                             commits,
                             commitIndex + 1

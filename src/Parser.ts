@@ -1,6 +1,6 @@
 import TreeSitter from 'tree-sitter';
-import { Declaration, Span } from './types';
-import { Language } from './languages/types';
+import {Declaration, Span} from './types';
+import {Language} from './languages/types';
 
 export default class Parser {
     lang: Language;
@@ -49,7 +49,6 @@ export default class Parser {
         const nestedSpans =
             node.namedChildren.map(child => this.findSpans(child, decl)).flat();
         const declAtNode = this.lang.findDeclaration(node);
-
         if (
             declAtNode &&
             declAtNode.name === decl.name &&
