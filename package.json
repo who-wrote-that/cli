@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "commander": "^4.0.1",
+    "commander": "^4.1.0",
     "tree-sitter": "^0.16.0",
     "tree-sitter-go": "^0.16.0",
     "tree-sitter-java": "^0.16.0",
