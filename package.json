@@ -1,6 +1,6 @@
 {
   "name": "who-wrote-that",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": "git@github.com:who-wrote-that/cli.git",
   "author": "Anton Baumann <anton@antonbaumann.com>, Jonas Hübotter <jonas.huebotter@gmail.com>",
