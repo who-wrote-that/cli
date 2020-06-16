@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { CodeOwners, Format, Strategy } from './types';
 import WhoWroteThat from './WhoWroteThat';
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 
 const validate = (valid: (value: any) => boolean, message: string) =>
     (value: any): any =>
