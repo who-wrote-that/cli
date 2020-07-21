@@ -29,8 +29,8 @@
     "tree-sitter-typescript": "^0.16.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-typescript": "^7.9.0",
     "@types/node": "^14.0.23",
