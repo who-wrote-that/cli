@@ -56,7 +56,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/generator@^7.10.5", "@babel/generator@^7.11.0":
+"@babel/generator@^7.11.0":
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.11.0.tgz#4b90c78d8c12825024568cbe83ee6c9af193585c"
   integrity sha512-fEm3Uzw7Mc9Xi//qU20cBKatTfs2aOtKqmvy/Vm7RkJEGFQ4xc9myCfbXxqK//ZS8MR/ciOHw6meGASJuKmDfQ==
@@ -227,7 +227,7 @@
     "@babel/template" "^7.10.4"
     "@babel/types" "^7.10.4"
 
-"@babel/helper-split-export-declaration@^7.10.1", "@babel/helper-split-export-declaration@^7.10.4", "@babel/helper-split-export-declaration@^7.11.0":
+"@babel/helper-split-export-declaration@^7.10.1", "@babel/helper-split-export-declaration@^7.11.0":
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-split-export-declaration/-/helper-split-export-declaration-7.11.0.tgz#f8a491244acf6a676158ac42072911ba83ad099f"
   integrity sha512-74Vejvp6mHkGE+m+k5vHY93FX2cAtrw1zXrZXRlG4l410Nm9PxfEiVTn1PjDPV5SnmieiueY4AFg2xqhNFuuZg==
@@ -267,7 +267,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.10.4", "@babel/parser@^7.10.5", "@babel/parser@^7.11.0", "@babel/parser@^7.11.1":
+"@babel/parser@^7.10.4", "@babel/parser@^7.11.0", "@babel/parser@^7.11.1":
   version "7.11.3"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.11.3.tgz#9e1eae46738bcd08e23e867bab43e7b95299a8f9"
   integrity sha512-REo8xv7+sDxkKvoxEywIdsNFiZLybwdI7hcT5uEPyQrSMB4YQ973BfC9OOrD/81MaIjh6UxdulIQXkjmiH3PcA==
@@ -855,10 +855,10 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
 
-"@types/node@^14.0.27":
-  version "14.0.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.27.tgz#a151873af5a5e851b51b3b065c9e63390a9e0eb1"
-  integrity sha512-kVrqXhbclHNHGu9ztnAwSncIgJv/FaxmzXJvGXNdcCpV1b8u1/Mi6z6m0vwy0LzKeXFTPLH0NzwmoJ3fNCIq0g==
+"@types/node@^14.6.0":
+  version "14.6.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.6.0.tgz#7d4411bf5157339337d7cff864d9ff45f177b499"
+  integrity sha512-mikldZQitV94akrc4sCcSjtJfsTKt4p+e/s0AGscVA6XArQ9kFclP+ZiYUMnq987rc6QlYxXv/EivqlfSLxpKA==
 
 "@typescript-eslint/eslint-plugin@^2.34.0":
   version "2.34.0"
