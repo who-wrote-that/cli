@@ -56,7 +56,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/generator@^7.10.5", "@babel/generator@^7.11.0":
+"@babel/generator@^7.11.0":
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.11.0.tgz#4b90c78d8c12825024568cbe83ee6c9af193585c"
   integrity sha512-fEm3Uzw7Mc9Xi//qU20cBKatTfs2aOtKqmvy/Vm7RkJEGFQ4xc9myCfbXxqK//ZS8MR/ciOHw6meGASJuKmDfQ==
@@ -227,7 +227,7 @@
     "@babel/template" "^7.10.4"
     "@babel/types" "^7.10.4"
 
-"@babel/helper-split-export-declaration@^7.10.1", "@babel/helper-split-export-declaration@^7.10.4", "@babel/helper-split-export-declaration@^7.11.0":
+"@babel/helper-split-export-declaration@^7.10.1", "@babel/helper-split-export-declaration@^7.11.0":
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-split-export-declaration/-/helper-split-export-declaration-7.11.0.tgz#f8a491244acf6a676158ac42072911ba83ad099f"
   integrity sha512-74Vejvp6mHkGE+m+k5vHY93FX2cAtrw1zXrZXRlG4l410Nm9PxfEiVTn1PjDPV5SnmieiueY4AFg2xqhNFuuZg==
@@ -267,7 +267,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.10.4", "@babel/parser@^7.10.5", "@babel/parser@^7.11.0", "@babel/parser@^7.11.1":
+"@babel/parser@^7.10.4", "@babel/parser@^7.11.0", "@babel/parser@^7.11.1":
   version "7.11.3"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.11.3.tgz#9e1eae46738bcd08e23e867bab43e7b95299a8f9"
   integrity sha512-REo8xv7+sDxkKvoxEywIdsNFiZLybwdI7hcT5uEPyQrSMB4YQ973BfC9OOrD/81MaIjh6UxdulIQXkjmiH3PcA==
@@ -3618,10 +3618,10 @@ tree-sitter-typescript@^0.16.0:
   dependencies:
     nan "^2.14.0"
 
-tree-sitter@^0.16.1:
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/tree-sitter/-/tree-sitter-0.16.1.tgz#8bec45e27932172235f32659a31aaa661440472b"
-  integrity sha512-+vQBp4yefo+AQ2gv+b2PK+zglWS+9UqZGdzr05EYDSOcVb+tnr0Tj6hjknDTxUEGQagMe0JcDsIrr6peI7Yvyg==
+tree-sitter@^0.16.2:
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/tree-sitter/-/tree-sitter-0.16.2.tgz#5a24015520237738bfe5bee7758667217786f3ad"
+  integrity sha512-1d9oNXVUWJGzpPyTwI7qBHoGZYLD4BU04bHSxj9PqRgR3URY8fXqk2LhFCu7AFBDQHifcinMxss5CqYXCTGcLQ==
   dependencies:
     nan "^2.14.0"
     prebuild-install "^5.0.0"
